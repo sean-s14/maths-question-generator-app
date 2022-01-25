@@ -1,0 +1,210 @@
+
+@use '../components/_popup'
+    
+.test
+    border: 2px solid #FFFFFF
+
+    &__container
+        min-width: 15rem
+        max-width: 90vw
+        width: 90vw
+        min-height: 25rem
+        max-height: 35rem
+        height: 28rem
+        display: flex
+        flex-direction: column
+        align-items: center
+        position: relative
+        margin-bottom: auto
+        overflow: hidden
+
+        &__blank
+            height: 70%
+            display: flex
+
+        &__inner
+            position: absolute
+            left: 0
+            height: 70%
+            width: auto
+            display: flex
+            transition: left 0.5s
+            // border: 1px solid #eee
+
+
+        &__question
+            height: 100%
+            min-width: 15rem
+            max-width: 90vw
+            width: 90vw
+            display: flex
+            align-items: center
+            justify-content: center
+            opacity: 0
+            transition: opacity .8s
+            // border: 1px solid #eee
+
+            &:first-child
+                opacity: 1
+
+        &__answer
+            display: none
+
+
+    &__timer
+        position: absolute
+        top: .5rem
+        right: .5rem
+        font-size: .9rem
+        letter-spacing: .1rem
+        color: darken(#EEEEEE, 10)
+
+        &__ms
+            font-size: .7rem
+
+
+    &__btns
+        display: flex
+        flex-direction: column
+        align-items: center
+        justify-content: center
+        height: 30%
+        
+        &__answer
+            margin-bottom: 1rem
+            text-align: center
+            outline: none
+            cursor: default
+        
+        &__submit
+            font-weight: 500
+
+
+.question__completion
+
+    &__cover
+        width: 100vw
+        height: 100vh
+        opacity: 0.5
+        background-color: #333
+        position: fixed
+        z-index: 25
+        transition: opacity 0.3s
+        opacity: 0
+        pointer-events: none
+
+    &__popup
+        @include popup.popup
+        background-color: #222
+        width: 15rem
+        height: 8rem
+
+        padding-bottom: 1rem
+        overflow-y: scroll
+        overflow-x: auto
+        border-radius: .5rem
+        z-index: 26
+        
+        display: flex
+        flex-direction: column
+        align-items: center
+        justify-content: space-around
+
+        opacity: 0
+        pointer-events: none
+
+        &::-webkit-scrollbar
+            width: 0px !important
+            // height: 5px !important
+
+        &::-webkit-scrollbar-track
+            background: #444
+
+        &::-webkit-scrollbar-thumb
+            background-color: #555
+
+            &:hover
+                background-color: #666
+
+        &__complete_msg
+            // configured margin in test.js
+
+        > button
+            height: 2rem
+            display: flex
+            align-items: center
+            justify-content: center
+
+            > i
+                margin-left: 0.5rem
+
+
+.test__complete
+
+    &__time
+        display: none
+        margin-top: 1rem
+        margin-bottom: 1rem
+    
+    &__btns
+        display: none
+        flex-direction: column
+        align-items: center
+        
+        > div, a
+            font-size: 1rem
+            margin-bottom: 1rem
+            height: 2rem
+            display: flex
+            align-items: center
+            justify-content: center
+
+            > i
+                margin-left: 0.75rem
+                
+
+    &__table
+        display: none
+        overflow-x: scroll !important
+        -ms-overflow-style: none
+        scrollbar-width: none
+        align-self: flex-start
+        max-width: 95%
+        height: auto
+        margin-left: 2.5%
+        margin-top: 1rem
+        padding-bottom: .5rem
+        border-collapse: collapse
+
+        &::-webkit-scrollbar
+            width: 10px !important
+            height: 10px !important
+            // height: 5px !important
+
+        &::-webkit-scrollbar-track
+            background: #444
+
+        &::-webkit-scrollbar-thumb
+            background-color: #555
+
+            &:hover
+                background-color: #666
+
+        &::-webkit-scrollbar-corner
+            background-color: #444
+        
+        tr
+
+            &:nth-child(2n)
+                background-color: #333
+
+        td, th
+            min-width: 7rem
+            text-align: center
+            padding-top: 0.25rem
+            padding-bottom: 0.25rem
+
+        td
+
+        i
+            color: #64B5F6

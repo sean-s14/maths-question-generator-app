@@ -1,0 +1,22 @@
+{% extends 'generator/base.html' %}
+{% load static %}
+
+{% block content %}
+<table class="history__table">
+    <tr>
+        <th>Title</th>
+        <th>Score</th>
+        <th>Time</th>
+        <th>Date</th>
+    </tr>
+    {% for h in history %}
+    <tr>
+        <td><a href="{% url 'generator:preset_detail' h.preset.id %}" data-preset-title="">{{h.preset.title}}</a></td>
+        <td>{{h.score}}/{{h.preset.question_count}}</td>
+        <td data-time-completed-in="">{{h.time_completed_in}}</td>
+        <td>{{h.date_created}}</td>
+    </tr>
+    {% endfor %}
+</table>
+<script src="{% static 'js/history.js' %}"></script>
+{% endblock content %}

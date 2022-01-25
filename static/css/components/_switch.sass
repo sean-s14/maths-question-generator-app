@@ -1,0 +1,34 @@
+.switch
+    width: 7rem
+    height: 2.2rem
+    background-color: #EEEEEE
+    border-radius: .5rem
+    position: relative
+    display: flex
+    align-items: center
+    justify-content: space-around
+    cursor: pointer
+
+    > input
+        display: none
+        
+        &:checked + .slider
+            right: 50%
+        
+        &:checked ~ .timer--on
+            color: #EEE
+        
+        &:checked ~ .timer--off
+            color: #333
+
+    > .slider
+        z-index: 2
+        position: absolute
+        top: 0
+        right: 0
+        display: flex
+        border-radius: .5rem
+        background-color: #64B5F6
+        width: 50%
+        height: 100%
+        transition: right .3s

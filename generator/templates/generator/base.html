@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1">
+    <title>Maths Generator</title>
+    <link rel="shortcut icon" href="#">
+    <link rel="stylesheet" type='text/css' href="{% static 'css/base.css' %}">
+    <script src="https://kit.fontawesome.com/61b5fec5d5.js" crossorigin="anonymous"></script>
+    <script src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
+</head>
+<body>
+
+    {% include "generator/partials/_login.html" %}
+    {% include "generator/partials/_signup.html" %}
+
+    {% include "generator/partials/_navigation.html" %}
+
+    <div id="page">
+        {% block content %}
+    
+        {% endblock content %}
+    </div>
+</body>
+</html>

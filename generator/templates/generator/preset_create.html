@@ -1,0 +1,196 @@
+{% extends 'generator/base.html' %}
+{% load static %}
+{% block content %}
+
+{% for message in messages %}
+    <div class="message message__error">
+        {{ message }}
+        <div style="margin-left: auto;"><i class="fas fa-times-circle"></i></div>
+    </div>
+{% endfor %}
+
+<div class="hidden" data-preset-create-cover=""></div>
+<form 
+    {% if preset %}
+        action="{% url 'generator:preset_edit' preset.id %}" 
+    {% endif %}
+    action="{% url 'generator:preset_create' %}" 
+    method="POST" 
+    class="preset__form"
+>
+    {% csrf_token %}
+
+    <!-- Title -->
+    <div class="preset__field">
+        <label for="id_title">{{ form.title.label }}:</label>
+        {{ form.title }}
+    </div>
+
+    <!-- Topics & Sub-Topics -->
+    <div class="preset__field">
+        <label for="id_topics">{{ form.topics.label }}:</label>
+        <div class="d-none">
+            {{ form.topics }}
+            {{ form.sub_topics }}
+        </div>
+        <div class="preset__field__topics">
+            <div class="btn btn--fill" data-topics-choice-btn="">Choose Topics</div>
+            <ul class="preset__field__topics__popup hidden">
+                {% for topic in topics %}
+                    <li>
+                        <div class="custom-checkbox">
+                            <input type="checkbox" id="topics-{{topic.id}}"
+                                {% if topic in preset.topics.all %}checked{% endif %}
+                            >
+                            <label for="topics-{{topic.id}}">
+                                <div><i class="fas fa-check fa-xs"></i></div>
+                                <span>{{topic.title}}</span>
+                            </label>
+                            <span 
+                                style="padding-left: 1rem; flex-grow: 1;"
+                                data-subtopics-toggle=""
+                            >
+                                <i class="fas fa-play"></i>
+                            </span>
+                        </div>
+                        <ul data-subtopics-list="">
+                            {% for subtopic in topic.subtopic_set.all %}
+                                <li class="custom-checkbox">
+                                    <input type="checkbox" id="subtopics-{{subtopic.id}}"
+                                        {% if subtopic in preset.sub_topics.all %}checked{% endif %}
+                                    >
+                                    <label for="subtopics-{{subtopic.id}}">
+                                        <div><i class="fas fa-check fa-xs"></i></div>
+                                        <span data-parent-topic="{{subtopic.parent_topic}}">
+                                            {{subtopic.title}}
+                                        </span>
+                                    </label>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    <li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+    <!-- Question Count -->
+    <div class="preset__field">
+        <label for="id_question_count">{{ form.question_count.label }}:</label>
+        {{ form.question_count }}
+    </div>
+
+    <!-- Difficulty -->
+    <!-- TODO: Include difficulty in math-generator package -->
+    <!-- <div class="preset__field">
+        <label for="id_difficulty">{{ form.difficulty.label }}:</label>
+        {{ form.difficulty }}
+    </div> -->
+
+    <!-- Timer -->
+    <div class="preset__field">
+        <label for="id_timer">{{ form.timer.label }}:</label>
+        <div class="d-none">{{ form.timer }}</div>
+        <label class="preset__field__timer" for="id_timer_checkbox">
+            <input type="checkbox" id="id_timer_checkbox"
+                {% if form.timer.value == True %}checked{% endif %}
+            >
+            <span class="slider"></span>
+        </label>
+    </div>
+
+    <!-- Timer Type -->
+    <div 
+        class="preset__field"
+        style="flex-direction: column; align-items: normal"
+        data-timer-type-field=""
+    >
+        <label style="display: block; margin-left: auto; margin-right: auto; padding-bottom: 0.5rem;">
+            {{ form.timer_type.label }}
+        </label>
+        <div class="d-none">{{ form.timer_type }}</div>
+
+        <div class="preset__field__timer__type">
+            <input type="radio" name="custom_timer_type" id="timer_type_stopwatch" class="d-none" 
+                {% if form.timer_type.value == 'SW' %}checked{% endif %}
+            >
+            <label class="preset__field__timer__type__option" for="timer_type_stopwatch">
+                <div class="preset__field__timer__type__option__radio_button">
+                    <span><i class="fas fa-check fa-xs"></i></span>
+                </div>
+                <!-- TODO: Add information icon to explain that all tests are timed regardless-->
+                <span>Stopwatch (i)</span>
+            </label>
+
+            <input type="radio" name="custom_timer_type" id="timer_type_countdown" class="d-none"
+                {% if form.timer_type.value == 'CD' %}checked{% endif %}
+            >
+            <label class="preset__field__timer__type__option"for="timer_type_countdown">
+                <div class="preset__field__timer__type__option__radio_button">
+                    <span><i class="fas fa-check fa-xs"></i></span>
+                </div>
+                <span>Countdown</span>
+            </label>
+        </div>
+    </div>
+
+    <!-- Timer Length -->
+    <div 
+        class="preset__field"
+        data-timer-length-field=""
+        style="flex-direction: column;"    
+    >
+        <!-- <label for="id_timer_length">{{ form.timer_length.label }}</label> -->
+        <div class="d-none" style="margin-bottom: 1rem;">{{ form.timer_length }}</div>
+
+        <div class="preset__field__timer__length">
+            <div class="btn btn--outline">
+                <span data-span-timer-unit="hours">00</span>:
+                <span data-span-timer-unit="minutes">00</span>:
+                <span data-span-timer-unit="seconds">00</span>
+            </div>
+            <div class="preset__field__timer__length__popup hidden">
+                <div 
+                    class="preset__field__timer__length__popup__change_btns"
+                    data-timer-length-increase-btns=""
+                >
+                    <div class="btn btn--fill" data-timer-length-increase="hours">
+                        <i class="fas fa-caret-up"></i>
+                    </div>
+                    <div class="btn btn--fill" data-timer-length-increase="minutes">
+                        <i class="fas fa-caret-up"></i>
+                    </div>
+                    <div class="btn btn--fill" data-timer-length-increase="seconds">
+                        <i class="fas fa-caret-up"></i>
+                    </div>
+                </div>
+                <div class="preset__field__timer__length__popup__inputs">
+                    <input type="text" data-timer-length-input="hours" value="00" disabled>
+                    <input type="text" data-timer-length-input="minutes" value="00" disabled>
+                    <input type="text" data-timer-length-input="seconds" value="00" disabled>
+                </div>
+                <div 
+                    class="preset__field__timer__length__popup__change_btns"
+                    data-timer-length-decrease-btns=""
+                >
+                    <div class="btn btn--fill" data-timer-length-decrease="hours">
+                        <i class="fas fa-caret-down"></i>
+                    </div>
+                    <div class="btn btn--fill" data-timer-length-decrease="minutes">
+                        <i class="fas fa-caret-down"></i>
+                    </div>
+                    <div class="btn btn--fill" data-timer-length-decrease="seconds">
+                        <i class="fas fa-caret-down"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Save Buttons -->
+    <input type="submit" value="Save & Begin" name="begin" class="btn btn--outline">
+    <input type="submit" value="Save" class="btn btn--fill">
+</form>
+
+<script src="{% static 'js/preset_create.js' %}"></script>
+{% endblock content %}

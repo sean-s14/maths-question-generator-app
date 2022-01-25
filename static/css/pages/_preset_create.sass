@@ -1,0 +1,289 @@
+
+@use '../components/_popup'
+
+.preset
+    
+    &__form
+        display: flex
+        flex-direction: column
+        max-width: 25rem
+        width: 90vw
+        margin-left: auto
+        margin-right: auto
+        margin-bottom: 2rem
+
+        > input[type="submit"]
+            margin-left: auto
+            margin-right: auto
+            margin-top: 1rem
+            width: 100%
+            max-width: 100%
+
+    &__field
+        display: flex
+        align-items: center
+        justify-content: space-between
+        padding: 0.8rem 0 0.8rem 0
+        font-size: 1.2rem
+
+        > label
+            font-size: 1.2rem
+
+            &[for="id_timer_length"]
+                margin-left: auto
+                margin-right: auto
+
+        > input, select
+            box-sizing: border-box
+            border-radius: .25rem
+            border: none
+            outline: none
+            padding: 0.5rem
+            font-size: 1.2rem
+            min-width: 8rem
+            max-width: 8rem
+            width: 8rem
+
+
+        // === TOPICS ===
+        &__topics
+
+            > .btn
+                // padding: 0.25rem 0.5rem
+                min-width: 8rem
+                max-width: 8rem
+                width: 8rem
+                font-size: 1rem
+                font-weight: 700
+                // color: #333
+
+
+            &__popup
+                @include popup.popup
+                list-style-type: none
+
+                > li
+                    padding: .3rem 0
+
+                    .custom-checkbox
+                        display: flex
+                        align-items: center
+
+                        > input
+                            display: none
+
+                            &:checked + label > div
+                                background-color: #64B5F6
+
+
+                        > label
+                            display: flex
+                            align-items: center
+                            font-weight: 500
+
+                            > div
+                                width: 1.2rem
+                                height: 1.2rem
+                                border-radius: .25rem
+                                background-color: #eee
+                                display: grid
+                                place-items: center
+                                padding: 0.15rem
+
+                                i
+                                    display: flex
+                                    align-items: center
+                                    justify-content: center
+                                    height: 50%
+                                    width: 50%
+
+                            > span
+                                padding-left: .5rem
+
+                        > span[data-subtopics-toggle=""]
+                            padding-left: 1rem
+                            display: flex
+                            flex-grow: 1
+                            
+                            > i
+                                transform: rotate(180deg)
+                                transition: transform 0.5s
+
+                    
+                    > ul
+                        display: flex
+                        flex-direction: column
+                        padding-left: 1rem
+                        padding-top: 0.5rem
+
+                        > li
+                            display: flex
+                            align-items: center
+                            padding: 0.5rem 0
+                            list-style-type: none
+
+
+        // === TIMER === 
+        &__timer
+            position: relative
+            display: inline-block
+            width: 5rem
+            height: 2.5rem
+
+            > input
+                opacity: 0
+                width: 0
+                height: 0
+
+                &:checked + .slider
+                    background-color: #64B5F6
+                    &:before
+                        // left: 55%
+                        transform: translateX(100%)
+                &:focus + .slider
+                    box-shadow: 0 0 1px #64B5F6
+                
+            > .slider
+                position: absolute
+                cursor: pointer
+                top: 0
+                left: 0
+                right: 0
+                bottom: 0
+                background-color: #ccc
+                transition: .4s
+                border-radius: .5rem
+
+                &:before
+                    position: absolute
+                    content: ""
+                    height: 80%
+                    width: 44%
+                    left: 6%
+                    bottom: 10%
+                    background-color: white
+                    transition: .4s
+                    border-radius: .5rem
+
+
+            &__type
+                display: flex
+                flex-direction: column
+
+                > input[type="radio"]
+                    &:checked + label > div > span
+                        opacity: 1
+
+                &__option
+                    padding: 1rem 0
+                    display: flex
+                    align-items: center
+
+                    &__radio_button
+                        display: flex
+                        width: 1.4rem
+                        height: 1.4rem
+                        background-color: #EEE
+                        border-radius: 2rem
+
+                        // Blue circle in middle when radio button is clicked
+                        > span
+                            display: flex
+                            align-items: center
+                            justify-content: center
+                            width: 100%
+                            height: 100%
+                            border-radius: 2rem
+                            background-color: #64B5F6
+                            opacity: 0
+                            transition: opacity .3s
+
+                    // Text span (e.g. Stopwatch / Countdown)
+                    > span
+                        padding-left: 1rem
+
+
+            &__length
+                max-width: 100% !important
+                width: 100% !important
+
+                > .btn.btn--outline
+                    max-width: 100% !important
+                    width: 100% !important
+                    height: 2.5rem !important
+                    border: 2px solid #777 !important
+                    border-radius: .3rem
+                    background-color: #222
+                    display: flex
+                    align-items: center
+                    justify-content: space-evenly
+
+                &__popup
+                    @include popup.popup
+                    max-height: 25rem
+                    height: 12rem
+                    overflow: hidden
+                    list-style-type: none
+                    border-radius: .5rem
+                    padding: 2rem 0.5rem
+
+                    &__change_btns
+                        display: flex
+                        align-items: center
+                        justify-content: space-evenly
+                        width: 100%
+
+                        &:first-child
+                            margin-bottom: 0.5rem
+                        
+                        &:last-child
+                            margin-top: 0.5rem
+
+                        > div
+                            width: 3rem
+                            height: 2rem
+
+                        &[data-timer-length-increase-btns=""]
+                            > div
+                                border-radius: .25rem .25rem 0 0 !important
+
+                        &[data-timer-length-decrease-btns=""]
+                            > div
+                                border-radius: 0 0 .25rem .25rem !important
+
+                    &__inputs
+                        display: flex
+                        align-items: center
+                        justify-content: space-evenly
+                        max-width: 100%
+                        width: 100%
+
+                        > input
+                            width: 3rem
+                            height: 2rem
+                            text-align: center
+                            font-size: 1.1rem
+                            border-radius: 0
+                            border: none
+                            outline: none
+                            background-color: #EEE
+
+
+.message
+    display: flex
+    position: fixed
+    top: 5rem
+    left: 0
+    right: 0
+    max-width: 80vw
+    margin-left: auto
+    margin-right: auto
+    border: 2px solid #EEE
+    border-radius: .3rem
+    padding: 0.4rem
+    transition: opacity .5s
+
+    &__error
+        background-color: #333
+        color: #ef5350
+        border-color: #ef5350

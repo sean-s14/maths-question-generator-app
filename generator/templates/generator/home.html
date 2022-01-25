@@ -1,0 +1,28 @@
+{% extends 'generator/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="home">
+    <h3 class="home__title">Maths Generator</h3>
+    
+    <div class="home__image">
+    
+    </div>
+    
+    <div class="home__btns">
+        <a 
+            href="{% url 'generator:preset_create' %}"
+            class="home__btns__btn btn btn--fill"    
+        >
+            Create Preset
+        </a>
+        <a 
+            href="{% url 'generator:preset_list' %}"
+            class="home__btns__btn btn btn--outline"    
+        >
+            View Presets
+        </a>
+    </div>
+</div>
+
+{% endblock content %}

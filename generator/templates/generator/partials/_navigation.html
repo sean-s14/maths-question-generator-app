@@ -1,0 +1,58 @@
+
+<!-- Navigation Bar -->
+<div class="nav nav__bar"></div>
+
+<!-- Navigation Toggle -->
+<label class="nav__toggle" for="menu-toggle">
+    <span class="nav__toggle__lines">
+        <span class="nav__toggle__line"></span>
+        <span class="nav__toggle__line"></span>
+        <span class="nav__toggle__line"></span>
+    </span>
+</label>
+
+<input type="checkbox" id="menu-toggle">
+
+<!-- Navigation Side Menu -->
+<div class="nav__menu__side">
+    <a 
+        href="{% url 'generator:home' %}" 
+        class="nav__menu__side__route"
+    >
+        {% if active == 'home' %}
+            <span class="active"></span>
+        {% endif %}
+        <i class="fas fa-home fa-lg"></i>
+        <span class="route_title">Home</span>
+    </a>
+    <a 
+        href="{% url 'generator:preset_create' %}" 
+        class="nav__menu__side__route"
+    >
+        {% if active == 'preset_create' %}
+            <span class="active"></span>
+        {% endif %}
+        <i class="fas fa-square fa-lg"></i>
+        <span class="route_title">Create Preset</span>
+    </a>
+    <a 
+        href="{% url 'generator:preset_list' %}" 
+        class="nav__menu__side__route"
+    >
+        {% if active == 'presets' %}
+            <span class="active"></span>
+        {% endif %}
+        <i class="fas fa-th-large fa-lg"></i>
+        <span class="route_title">Presets</span>
+    </a>
+    <a 
+        href="{% url 'generator:history' %}"
+        class="nav__menu__side__route"
+    >
+        {% if active == 'history' %}
+            <span class="active"></span>
+        {% endif %}
+        <i class="fas fa-history fa-lg"></i>
+        <span class="route_title">History</span>
+    </a>
+</div>

@@ -1,0 +1,87 @@
+{% extends 'generator/base.html' %}
+{% load static %}
+{% block content %}
+
+
+<div class="test__container tes">
+
+    <div class="test__timer">00:00:00.<span class="test__timer__ms">00</span></div>
+
+    <div class="test__container__blank"></div>
+
+    <!-- Question Completion Popup -->
+    <div class="question__completion__cover"></div>
+    <div class="question__completion__popup">
+        <div class="question__completion__popup__complete_msg">
+            --placeholder--
+        </div>
+        <button class="btn btn--fill" data-button-continue="">
+            Continue
+            <i class="fas fa-long-arrow-alt-right"></i>
+        </button>
+        <!-- Hidden elements below -->
+        <div class="test__complete__time">
+            <span>Time:</span>
+            <span>00:00:00.<span class="test__timer__ms">23</span></span>
+        </div>
+
+        <!-- Buttons for "New Test" & "Return to Presets" -->
+        <div class="test__complete__btns">
+            <a href="{% url 'generator:test' preset.id %}" class="btn btn--fill" data-new-test="">
+                New Test <i class="fas fa-redo-alt"></i>
+            </a>
+            <a href="{% url 'generator:preset_list' %}" class="btn btn--outline">
+                Return to Presets
+            </a>
+            <a href="{% url 'generator:history' %}" class="btn btn--outline">
+                View History
+            </a>
+        </div>
+
+        <!-- Table [ question | answer | user_answer | correct? ] -->
+        <table class="test__complete__table">
+            <tr>
+                <th>Question</th>
+                <th>Answer</th>
+                <th>Your Answer</th>
+                <th>Correct?</th>
+            </tr>
+            {% for question in questions %}
+            <tr>
+                <td>{{question.question}}</td>
+                <td>{{question.answer}}</td>
+                <td data-user-answer="">???</td>
+                <td data-correct=""><i class="fas fa-check-circle"></i></td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+    <div class="test__container__inner">
+        {% for question in questions %}
+            <div class="test__container__question">
+                {{question.question}}
+            </div>
+            <div class="test__container__answer">
+                {{question.answer}}
+            </div>
+        {% endfor %}
+    </div>
+
+    <div class="test__btns">
+        <input 
+            type="text" 
+            class="test__btns__answer btn btn--outline" 
+            placeholder="answer..."
+        >
+        <a class="test__btns__submit btn btn--fill">
+            SUBMIT
+        </a>
+    </div>
+
+    <!-- Hidden element to contain preset id to send ajax request in test.js -->
+    <div data-preset-id="{{preset.id}}"></div>
+
+</div>
+<script src="{% static 'js/test.js' %}"></script>
+{% endblock content %}

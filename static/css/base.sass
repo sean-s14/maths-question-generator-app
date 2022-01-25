@@ -1,0 +1,50 @@
+@use '_module'
+@use './components/_scrollbar'
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap')
+
+:root 
+    font-family: 'Roboto', sans-serif
+    letter-spacing: 1px
+    box-sizing: border-box !important
+    font-size: 20px
+    font-weight: 400
+    padding: 0
+    margin: 0
+    // overflow-x: hidden
+
+*
+    padding: 0
+    margin: 0
+    box-sizing: border-box !important
+
+body
+    background-color: #333333
+    color: #EEEEEE
+    @include scrollbar.scrollbar(.75rem)
+
+a
+    color: #EEEEEE
+
+#page
+    width: 100vw 
+    min-height: calc(100vh - 4rem)
+    display: flex
+    flex-direction: column
+
+// TODO: Replace .hidden with .d-none in html files
+.d-none
+    display: none
+
+.hidden
+    opacity: 0 !important
+    pointer-events: none !important
+
+.cover
+    position: fixed
+    top: 0
+    left: 0
+    width: 100vw
+    height: 100vh
+    z-index: 5
+    opacity: 0.5
+    background-color: #222

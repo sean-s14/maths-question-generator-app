@@ -1,0 +1,21 @@
+@use './_scrollbar'
+    
+@mixin popup
+    max-height: 80vh
+    height: 25rem
+    max-width: 80vw
+    width: 25rem
+    padding: 0.5rem
+    top: 50%
+    left: 50%
+    transform: translate(-50%, -50%)
+    position: fixed
+    background-color: #444
+    border-radius: .25rem
+    z-index: 20
+    pointer-events: all
+    opacity: 1
+    transition: opacity 0.4s
+    overflow-y: scroll
+
+    @include scrollbar.scrollbar

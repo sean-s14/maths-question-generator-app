@@ -1,0 +1,56 @@
+.history
+    
+    &__table
+        align-self: flex-start
+        max-width: 100vw
+        overflow: scroll
+
+        margin-bottom: auto
+        border-collapse: collapse
+        border: 4px solid #222
+        // margin-left: 1rem
+        // margin-right: 1rem
+        // border-left: none
+        
+        tr
+
+            &:nth-child(2n)
+                background-color: #222
+
+        td, th
+            min-width: 7rem
+            width: 7rem
+            // max-width: 8rem
+
+            text-align: center
+            padding-top: 0.25rem
+            padding-bottom: 0.25rem
+
+            &:first-child
+                min-width: 9rem
+
+            &:nth-child(2)
+                min-width: 5rem
+
+            &:last-child
+                min-width: 10rem
+                
+        th
+            font-size: 1.1rem
+            font-weight: 700
+
+        td
+            font-weight: 400
+            padding-top: 0.5rem
+            padding-bottom: 0.5rem
+
+            &:last-child, &:first-child
+                padding-right: 0.5rem
+
+            a
+                text-decoration: none
+                color: #64B5F6
+
+            a[data-preset-title=""]
+                font-weight: 500
+        

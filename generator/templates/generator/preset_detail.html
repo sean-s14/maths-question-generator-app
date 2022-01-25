@@ -1,0 +1,81 @@
+{% extends 'generator/base.html' %}
+{% load static %}
+{% block content %}
+<div class="cover hidden" data-preset-detail-cover=""></div>
+<div class="preset_detail__container">
+    <div class="preset_detail__field_container">
+        <a href="{% url 'generator:preset_edit' preset.id %}" class="btn btn--outline">Edit</a>
+        <a href="{% url 'generator:test' preset.id %}" class="btn btn--fill">Start Test</a>
+    </div>
+    <div class="preset_detail__field_container">
+        <div class="preset_detail__field_container__key">Title</div>
+        <div class="preset_detail__field_container__val">{{preset.title}}</div>
+    </div>
+    <div class="preset_detail__field_container">
+        <div class="preset_detail__field_container__key">Questions</div>
+        <div class="preset_detail__field_container__val">{{preset.question_count}}</div>
+    </div>
+    <div class="preset_detail__field_container">
+        <div class="preset_detail__field_container__key">Topics</div>
+        <div 
+            class="preset_detail__field_container__val" 
+            style="cursor: pointer;" 
+            data-preset-detail-topics=""
+        >
+            View Topics &gt;
+        </div>
+        <div id="detail_topics_popup" class="hidden">
+            <ul>
+                {% for topic in preset.topics.all %}
+                <li>
+                    <h4>{{topic.title}}</h4>
+                    <ul>
+                        {% for subtopic in preset.sub_topics.all %}
+                            {% if subtopic in topic.subtopic_set.all %}
+                                <li>{{subtopic.title}}</li>
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                </li>
+                <hr>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <div class="preset_detail__field_container">
+        <div class="preset_detail__field_container__key">Difficulty</div>
+        <div class="preset_detail__field_container__val">{{preset.difficulty}}</div>
+    </div>
+    <div class="preset_detail__field_container">
+        <div class="preset_detail__field_container__key">Timer</div>
+        <div class="preset_detail__field_container__val">{{preset.timer}}</div>
+    </div>
+    <div class="preset_detail__field_container">
+        <div class="preset_detail__field_container__key">Timer Type</div>
+        <!-- TODO: Change timer type to display stopwatch or countdown -->
+        <div class="preset_detail__field_container__val">{{preset.timer_type}}</div>
+    </div>
+    <div class="preset_detail__field_container">
+        <div class="preset_detail__field_container__key">Timer Length</div>
+        <!-- TODO: Convert timer length to hours/minutes/seconds -->
+        <div class="preset_detail__field_container__val">{{preset.timer_length}}</div>
+    </div>
+    <div class="preset_detail__field_container">
+        <div class="preset_detail__field_container__key">Best Record</div>
+        <div class="preset_detail__field_container__val">{{preset.best_record}}</div>
+    </div>
+    <div class="preset_detail__field_container">
+        <div class="preset_detail__field_container__key">Date Created</div>
+        <div class="preset_detail__field_container__val">{{preset.date_created}}</div>
+    </div>
+    <div class="preset_detail__field_container">
+        <div class="preset_detail__field_container__key">Date Modified</div>
+        <div class="preset_detail__field_container__val">{{preset.date_modified}}</div>
+    </div>
+    <!-- TODO: Turn into form -->
+    <div class="preset_detail__field_container">
+        <div class="btn btn--outline">Delete Preset</div>
+    </div>
+</div>
+<script src="{% static 'js/preset_detail.js' %}"></script>
+{% endblock content %}
