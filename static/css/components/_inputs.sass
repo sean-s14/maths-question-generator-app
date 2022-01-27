@@ -1,0 +1,59 @@
+@use '../base/_variables' as v
+    
+.input
+    font-size: 1.1rem
+    color: v.$light
+    text-align: center
+
+    width: 80%
+    padding: 0.3rem
+    outline: none
+    border: none
+    box-shadow: v.$bs-bottom
+    background-color: transparent
+
+    &__focused
+        box-shadow: v.$bs2-sm
+        border: none
+
+    &::placeholder
+        text-align: center
+        color: darken(v.$light, 25)
+
+    &:focus
+        box-shadow: v.$bs2-sm
+        border: none
+
+    &[type='submit']
+        width: 50%
+        box-shadow: v.$bs1-xs
+
+        &:hover, &:focus
+            background-color: v.$primary !important
+            box-shadow: v.$bs1 !important
+
+
+.input
+    &__override
+        font-size: 1.1rem !important
+        color: v.$light !important
+        text-align: center !important
+
+        width: 80%
+        padding: 0.3rem
+        outline: none !important
+        border: none !important
+        box-shadow: v.$bs1-xs !important
+        background-color: transparent !important
+
+        &::placeholder
+            text-align: center !important
+            color: darken(v.$light, 25) !important
+
+        &:focus
+            box-shadow: v.$bs2-sm !important
+            border: none !important
+
+        &[type='submit']
+            width: 50% !important
+            box-shadow: v.$bs1-xs !important

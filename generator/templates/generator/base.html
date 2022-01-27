@@ -13,9 +13,6 @@
 </head>
 <body>
 
-    {% include "generator/partials/_login.html" %}
-    {% include "generator/partials/_signup.html" %}
-
     {% include "generator/partials/_navigation.html" %}
 
     <div id="page">
@@ -23,5 +20,7 @@
     
         {% endblock content %}
     </div>
+
+    <script src="{% static 'js/components.js' %}"></script>
 </body>
 </html>

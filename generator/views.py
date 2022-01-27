@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required, user_passes_test
 
 from django.http import JsonResponse
 import json
@@ -16,18 +17,21 @@ def home(request):
     return render(request, 'generator/home.html', context)
 
 
+@login_required
 def preset_list(request):
-    presets = Preset.objects.all()
+    presets = Preset.objects.filter(user=request.user)
     context = {'active': 'presets', 'presets': presets}
     return render(request, 'generator/preset_list.html', context)
 
 
+@login_required
 def preset_detail(request, id):
     preset = get_object_or_404(Preset, pk=id)
     context = {'preset': preset}
     return render(request, 'generator/preset_detail.html', context)
 
 
+@login_required
 def preset_create(request):
     context = {}
 
@@ -35,36 +39,32 @@ def preset_create(request):
         form = PresetForm(request.POST)
         form_topics = form['topics'].value()
         form_sub_topics = form['sub_topics'].value()
-        
-        # print(form_topics)
-        # print(form_sub_topics)
 
         if not (form_topics or form_sub_topics):
-            # Generate error messages
             messages.error(request,'You must select a topic')
             return redirect('/preset_create/')
 
         if form.is_valid():
             print('Form is valid!')
-            # topics = form.cleaned_data['topics']
-            # print(topics)
-            form.save()
+            instance = form.save(commit=False)
+            instance.user = request.user
+            instance.save()
             return redirect('/preset_create/')
-        print('Form is NOT valid...')
+
+        else:
+            print('Form is NOT valid...')
+    
     else:
         form = PresetForm()
-        # TODO: Add topics and sub-topics to context
-        # Then use jQuery to select the options on the rendered form that
-        # correspond to the selected topic/sub-topic
         topics = Topic.objects.all()
         sub_topics = SubTopic.objects.all()
         context = {'topics': topics, 'sub_topics': sub_topics}
-
 
     context = {**context, 'active': 'preset_create', 'form': form}
     return render(request, 'generator/preset_create.html', context)
 
 
+@login_required
 def preset_edit(request, id):
     context = {}
     preset = Preset.objects.get(id=id)
@@ -81,8 +81,6 @@ def preset_edit(request, id):
 
         if form.is_valid():
             print('Form is valid!')
-            # topics = form.cleaned_data['topics']
-            # print(topics)
             form.save()
             return redirect(f'/presets/{id}/')
 
@@ -100,7 +98,7 @@ def preset_edit(request, id):
     context = {**context, 'preset': preset}
     return render(request, 'generator/preset_create.html', context)
 
-
+# TODO: Make two seperate test urls (one for logged in users one for anonymous users)
 def test(request, id):
     preset = get_object_or_404(Preset, pk=id)
 
@@ -128,15 +126,18 @@ def test(request, id):
     return render(request, 'generator/test.html', context)
 
 
+@login_required
 def history_view(request):
 
     if request.method == 'POST':
-        request = json.loads(request.body)
-        form = HistoryForm(request)
+        json_request = json.loads(request.body)
+        form = HistoryForm(json_request)
         
         if form.is_valid():
             print('Form is valid!')
-            form.save()
+            instance = form.save(commit=False)
+            instance.user = request.user
+            instance.save()
             return JsonResponse({'response': 'Success!'})
         else:
             print('Form is NOT valid...')

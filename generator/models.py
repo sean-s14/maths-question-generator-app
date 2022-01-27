@@ -1,6 +1,10 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+from django.utils.text import slugify
+# from django.contrib.auth import get_user_model
+from django.conf import settings
 
+USER = settings.AUTH_USER_MODEL
 
 class Topic(models.Model):
     title = models.CharField(max_length=100, unique=True)
@@ -29,10 +33,9 @@ class Preset(models.Model):
         HARD = 'HARD', _('hard')
         MIXED = 'MIXED', _('mixed')
 
-    # TODO: Add foreign key to user account below
-    # user = 
-    title           = models.CharField(max_length=100)  # TODO: Add unique=True for specific users?
-    # TODO: Add slug = models.???
+    user            = models.ForeignKey(USER, on_delete=models.CASCADE)
+    title           = models.CharField(max_length=100)  # TODO: Check for duplicate titles/slugs in views.py
+    slug            = models.SlugField(max_length=100, blank=True, null=True)  # Slugify in the save method
     question_count  = models.IntegerField(default=5, blank=True, null=True)
 
     difficulty = models.CharField(
@@ -66,12 +69,15 @@ class Preset(models.Model):
     def __str__(self):
         return self.title
 
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.title)
+        super(Preset, self).save(*args, **kwargs)
+
 
 class History(models.Model):
-    # TODO: Add foreign key to user account below
-    # user = 
+    user                = models.ForeignKey(USER, on_delete=models.CASCADE)
     preset              = models.ForeignKey(Preset, on_delete=models.DO_NOTHING)
-    # TODO: Changed below to score (update views.py & html files)
     score               = models.IntegerField()
     time_completed_in   = models.IntegerField()  # Milliseconds
     date_created        = models.DateTimeField(auto_now_add=True, blank=True, null=True)

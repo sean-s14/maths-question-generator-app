@@ -1,8 +1,9 @@
+@use '../base/_variables' as v
+    
 .btn
     display: grid
     place-items: center
     width: 10rem
-    // min-width: 10rem
     max-width: 10rem
     height: 2.5rem
     border-radius: .25rem
@@ -12,16 +13,22 @@
     padding-right: .25rem
     margin: 0
     font-size: 1.1rem
+    font-weight: 700
     text-decoration: none
     cursor: pointer
+    transition: all .3s
+    box-shadow: v.$bs1-xs
 
     &--outline
         background-color: transparent
         color: #EEEEEE
-        height: 2.5rem  // calc(2.5rem - 0.3rem)
-        // width: calc(10rem - 0.3rem)
-        border: 0.15rem solid #64B5F6 !important
+        height: 2.5rem
+        // border: 0.15rem solid v.$primary !important
+
+        &:hover
+            background-color: v.$primary !important
+            box-shadow: 0 0 5px v.$primary, 0 0 15px v.$primary, 0 0 50px v.$primary !important
     
     &--fill
-        background-color: #64B5F6
+        background-color: v.$primary
         color: #EEEEEE

@@ -1,0 +1,11 @@
+{% extends 'generator/base.html' %}
+{% load static %}
+
+{% block content %}
+<form action="{% url 'custom_auth:login' %}" method="POST" class="auth__form">
+    {% csrf_token %}
+    {{form.username}}
+    {{form.password}}
+    <input type="submit" value='Login' class="btn btn--outline">
+</form>
+{% endblock content %}

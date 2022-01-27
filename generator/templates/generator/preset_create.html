@@ -34,7 +34,7 @@
             {{ form.sub_topics }}
         </div>
         <div class="preset__field__topics">
-            <div class="btn btn--fill" data-topics-choice-btn="">Choose Topics</div>
+            <div class="btn btn--outline" data-topics-choice-btn="">Choose Topics</div>
             <ul class="preset__field__topics__popup hidden">
                 {% for topic in topics %}
                     <li>
@@ -154,32 +154,32 @@
                     class="preset__field__timer__length__popup__change_btns"
                     data-timer-length-increase-btns=""
                 >
-                    <div class="btn btn--fill" data-timer-length-increase="hours">
+                    <div class="btn btn--outline" data-timer-length-increase="hours">
                         <i class="fas fa-caret-up"></i>
                     </div>
-                    <div class="btn btn--fill" data-timer-length-increase="minutes">
+                    <div class="btn btn--outline" data-timer-length-increase="minutes">
                         <i class="fas fa-caret-up"></i>
                     </div>
-                    <div class="btn btn--fill" data-timer-length-increase="seconds">
+                    <div class="btn btn--outline" data-timer-length-increase="seconds">
                         <i class="fas fa-caret-up"></i>
                     </div>
                 </div>
                 <div class="preset__field__timer__length__popup__inputs">
-                    <input type="text" data-timer-length-input="hours" value="00" disabled>
-                    <input type="text" data-timer-length-input="minutes" value="00" disabled>
-                    <input type="text" data-timer-length-input="seconds" value="00" disabled>
+                    <input type="text" data-timer-length-input="hours" value="00" disabled class="input__override">
+                    <input type="text" data-timer-length-input="minutes" value="00" disabled class="input__override">
+                    <input type="text" data-timer-length-input="seconds" value="00" disabled class="input__override">
                 </div>
                 <div 
                     class="preset__field__timer__length__popup__change_btns"
                     data-timer-length-decrease-btns=""
                 >
-                    <div class="btn btn--fill" data-timer-length-decrease="hours">
+                    <div class="btn btn--outline" data-timer-length-decrease="hours">
                         <i class="fas fa-caret-down"></i>
                     </div>
-                    <div class="btn btn--fill" data-timer-length-decrease="minutes">
+                    <div class="btn btn--outline" data-timer-length-decrease="minutes">
                         <i class="fas fa-caret-down"></i>
                     </div>
-                    <div class="btn btn--fill" data-timer-length-decrease="seconds">
+                    <div class="btn btn--outline" data-timer-length-decrease="seconds">
                         <i class="fas fa-caret-down"></i>
                     </div>
                 </div>
@@ -189,7 +189,7 @@
 
     <!-- Save Buttons -->
     <input type="submit" value="Save & Begin" name="begin" class="btn btn--outline">
-    <input type="submit" value="Save" class="btn btn--fill">
+    <input type="submit" value="Save" class="btn btn--outline">
 </form>
 
 <script src="{% static 'js/preset_create.js' %}"></script>

@@ -1,4 +1,5 @@
 @use '../components/_popup'
+@use '../base/_variables' as v
 
 .preset_detail
     
@@ -44,10 +45,18 @@
                 margin-top: 1rem
                 max-width: 100% !important
                 width: 100% !important
-                border-color: #ef5350 !important
-                color: #ef5350
                 margin-left: auto
                 margin-right: auto
+
+                border-color: #ef5350 !important
+                color: #ef5350
+                box-shadow: v.$bs1-xs-secondary
+
+                &:hover
+                    background-color: v.$secondary !important
+                    color: v.$light
+                    box-shadow: 0 0 5px v.$secondary, 0 0 15px v.$secondary, 0 0 50px v.$secondary !important
+                    
 
         &__key
             display: flex

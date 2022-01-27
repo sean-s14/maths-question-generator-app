@@ -1,0 +1,31 @@
+@use '../base/_variables' as v
+
+.auth__form
+    // Positioning
+    margin: 3rem auto auto auto
+    // border: 1px solid v.$light
+
+    // Sizing
+    width: clamp(12rem, 22rem, 85vw)
+    height: auto
+    max-height: 70vh
+
+    // Contents
+    display: flex
+    flex-direction: column
+    align-items: center
+    padding: 2rem 0
+    
+    border-radius: .75rem
+    box-shadow: v.$bs1
+
+    &__focused
+        box-shadow: v.$bs2-sm !important
+        border: none !important
+
+    > input
+        margin: .8rem auto
+
+        &[type='submit']
+            margin-top: 2rem
+

@@ -232,10 +232,15 @@ const addResultsToHistoryForm = () => {
     if ( sendAjax ) {
         sendAjax = false
 
-        // Data to be sent - preset, questions_completed, time_completed_in
         let presetId = parseInt($("[data-preset-id]").data("preset-id"));
         let score = questions_correct
         let time_completed_in = Date.now() - startingTime;
+
+        let data = {
+            "preset": presetId,
+            "score": score,
+            "time_completed_in": time_completed_in
+        }
 
         $.ajax({
             url: '/history/',
@@ -244,11 +249,7 @@ const addResultsToHistoryForm = () => {
                 'X-CSRFToken': csrftoken
             },
             method: 'POST',
-            data: JSON.stringify({
-                "preset": presetId,
-                "score": score,
-                "time_completed_in": time_completed_in
-            }),
+            data: JSON.stringify(data),
             dataType: 'json',
             success: (data) => {
                 // TODO: Remove this in production

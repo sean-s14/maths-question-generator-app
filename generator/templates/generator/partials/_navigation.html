@@ -1,6 +1,14 @@
 
 <!-- Navigation Bar -->
-<div class="nav nav__bar"></div>
+<div class="nav nav__bar">
+    <!-- TODO: add authentication stuff here -->
+    <div></div>
+    {% if user.is_authenticated %}
+        <p class="nav__bar__username">
+            <span>{{user.username}}</span>
+        </p>
+    {% endif %}
+</div>
 
 <!-- Navigation Toggle -->
 <label class="nav__toggle" for="menu-toggle">
@@ -12,6 +20,8 @@
 </label>
 
 <input type="checkbox" id="menu-toggle">
+<!-- TODO: Create cover that covers screen behind nav menu -->
+<!-- TODO: Clicking it closes the nav menu -->
 
 <!-- Navigation Side Menu -->
 <div class="nav__menu__side">
@@ -55,4 +65,39 @@
         <i class="fas fa-history fa-lg"></i>
         <span class="route_title">History</span>
     </a>
+    <hr style="width: 90%">
+    {% if not user.is_authenticated %}
+        <a 
+            href="{% url 'custom_auth:login' %}"
+            class="nav__menu__side__route"
+        >
+            {% if active == 'login' %}
+                <span class="active"></span>
+            {% endif %}
+            <i class="fas fa-sign-in-alt fa-lg"></i>
+            <span class="route_title">Login</span>
+        </a>
+        <a 
+            href="{% url 'custom_auth:signup' %}"
+            class="nav__menu__side__route"
+        >
+            {% if active == 'signup' %}
+                <span class="active"></span>
+            {% endif %}
+            <i class="fas fa-user-plus fa-lg"></i>
+            <span class="route_title">Signup</span>
+        </a>
+    {% endif %}
+    {% if user.is_authenticated %}
+        <a 
+            href="{% url 'custom_auth:logout' %}"
+            class="nav__menu__side__route"
+        >
+            {% if active == 'logout' %}
+                <span class="active"></span>
+            {% endif %}
+            <i class="fas fa-sign-out-alt fa-lg"></i>
+            <span class="route_title">Logout</span>
+        </a>
+    {% endif %}
 </div>

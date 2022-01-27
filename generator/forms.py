@@ -1,6 +1,6 @@
-from django.forms import ModelForm, widgets, TextInput
+from django.forms import ModelForm
 from django.utils.translation import gettext_lazy as _
-from .models import Topic, SubTopic, Preset, History
+from .models import Preset, History
 
 
 class PresetForm(ModelForm):
@@ -17,6 +17,12 @@ class PresetForm(ModelForm):
             'timer_type': _('Timer Type'),
             'timer_length': _('Timer Length')
         }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["title"].widget.attrs["class"] = "input"
+        self.fields["title"].widget.attrs["placeholder"] = "title"
+        self.fields["question_count"].widget.attrs["class"] = "input"
 
 
 class HistoryForm(ModelForm):
