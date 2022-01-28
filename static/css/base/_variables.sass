@@ -1,5 +1,13 @@
+
+@use "sass:list"
+    
 $primary: #64B5F6
-$secondary: #ef5350
+$secondary: #e57373
+
+$error: #e57373
+$success: #4db6ac
+$warning: #fff176
+
 $light: #EEE
 $dark: #333
 
@@ -15,3 +23,18 @@ $bs2-sm: 0 0 2px $primary, 0 0 6px $primary, 0 0 10px $primary inset
 $bs-bottom: 0 6px 6px -6px $primary
 
 $bs2-sm-secondary: 0 0 2px $secondary, 0 0 6px $secondary, 0 0 10px $secondary inset
+
+
+$msg-colors: ("success": $success, "warning": $warning, "error": $error, "info": $light)
+
+$box-shadow-sizes: ("lg": (5px, 15px, 50px), "md": (4px, 12px, 30px), "sm": (2px, 6px, 15px))
+
+@each $name, $size in $box-shadow-sizes
+
+@each $color-name, $color in $msg-colors
+    .message__#{$color-name}
+        color: $color
+        @each $size-name, $sizes in $box-shadow-sizes
+            &__#{$size-name}
+                color: $color
+                box-shadow: 0 0 list.nth($sizes, 1) $color, 0 0 list.nth($sizes, 2) $color, 0 0 list.nth($sizes, 3) $color

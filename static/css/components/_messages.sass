@@ -1,0 +1,25 @@
+@use '../base/_variables' as v
+
+.message
+    display: flex
+    border: 2px solid v.$light
+    border-radius: .3rem
+    padding: 0.4rem
+    transition: all .5s
+    width: 100%
+    margin-bottom: 1rem
+    border: none
+    background-color: rgba(51, 51, 51, 0.9)
+
+
+    &__container
+        position: fixed
+        top: 5rem
+        left: 0
+        right: 0
+        max-width: 80vw
+        width: auto
+        margin-left: auto
+        margin-right: auto
+        opacity: 0
+        // transition: opacity 0.5s

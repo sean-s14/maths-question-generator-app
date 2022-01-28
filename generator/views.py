@@ -19,7 +19,7 @@ def home(request):
 
 @login_required
 def preset_list(request):
-    presets = Preset.objects.filter(user=request.user)
+    presets = Preset.objects.filter(user=request.user).order_by('-date_modified')
     context = {'active': 'presets', 'presets': presets}
     return render(request, 'generator/preset_list.html', context)
 
@@ -46,10 +46,14 @@ def preset_create(request):
 
         if form.is_valid():
             print('Form is valid!')
+
             instance = form.save(commit=False)
             instance.user = request.user
             instance.save()
-            return redirect('/preset_create/')
+            form.save_m2m()
+
+            messages.success(request, 'New topic created!')
+            return redirect('/presets/')
 
         else:
             print('Form is NOT valid...')
@@ -112,12 +116,12 @@ def test(request, id):
     questions = []
     while len(questions) < preset.question_count:
         q_and_a = basic_arithmetic(
-        add=add,
-        sub=sub,
-        mul=mul,
-        div=div,
-        min_res=0,
-        max_res=1000
+            add=add,
+            sub=sub,
+            mul=mul,
+            div=div,
+            min_res=0,
+            max_res=1000
         )
         questions.append(q_and_a)
 
@@ -143,6 +147,6 @@ def history_view(request):
             print('Form is NOT valid...')
             return JsonResponse({'response': 'Failure...'})
     
-    history = History.objects.all().order_by('-date_created')
+    history = History.objects.filter(user=request.user).order_by('-date_created')
     context = {'history': history}
     return render(request, 'generator/history.html', context)

@@ -26,13 +26,13 @@
 
         <!-- Buttons for "New Test" & "Return to Presets" -->
         <div class="test__complete__btns">
-            <a href="{% url 'generator:test' preset.id %}" class="btn btn--fill" data-new-test="">
+            <a href="{% url 'generator:test' preset.id %}" class="btn btn--outline input" data-new-test="" data-submit=''>
                 New Test <i class="fas fa-redo-alt"></i>
             </a>
-            <a href="{% url 'generator:preset_list' %}" class="btn btn--outline">
+            <a href="{% url 'generator:preset_list' %}" class="btn btn--outline input" data-submit=''>
                 Return to Presets
             </a>
-            <a href="{% url 'generator:history' %}" class="btn btn--outline">
+            <a href="{% url 'generator:history' %}" class="btn btn--outline input" data-submit=''>
                 View History
             </a>
         </div>
@@ -82,5 +82,5 @@
     <div data-preset-id="{{preset.id}}"></div>
 
 </div>
-<script src="{% static 'js/test.js' %}"></script>
+<script src="{% static 'js/pages/test.js' %}"></script>
 {% endblock content %}

@@ -96,7 +96,7 @@ const show_continue_popup = () => {
     let answer = test_container_answers.eq(question_num).text().trim();
     if ( user_answer == answer ) {
         question_complete_msg.css('color', '#66bb6a');
-        question_complete_msg.text('Correct!');
+        question_complete_msg.text('CORRECT!');
         questions_correct++;
         questions_correct_arr.push(true);
     } else {

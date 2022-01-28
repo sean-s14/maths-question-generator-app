@@ -1,4 +1,4 @@
-
+@use '../base/_variables' as v
 @use '../components/_popup'
 
 .preset
@@ -61,6 +61,7 @@
             &__popup
                 @include popup.popup
                 list-style-type: none
+                padding: 1rem
 
                 > li
                     padding: .3rem 0
@@ -73,7 +74,10 @@
                             display: none
 
                             &:checked + label > div
-                                background-color: #64B5F6
+                                background-color: v.$primary
+
+                                > i
+                                    color: v.$light
 
 
                         > label
@@ -85,7 +89,8 @@
                                 width: 1.2rem
                                 height: 1.2rem
                                 border-radius: .25rem
-                                background-color: #eee
+                                background-color: transparent
+                                box-shadow: v.$bs1-xs
                                 display: grid
                                 place-items: center
                                 padding: 0.15rem
@@ -96,6 +101,7 @@
                                     justify-content: center
                                     height: 50%
                                     width: 50%
+                                    color: transparent
 
                             > span
                                 padding-left: .5rem
@@ -129,6 +135,7 @@
             display: inline-block
             width: 5rem
             height: 2.5rem
+            // box-shadow: v.$bs1-xs
 
             > input
                 opacity: 0
@@ -136,12 +143,12 @@
                 height: 0
 
                 &:checked + .slider
-                    background-color: #64B5F6
+                    background-color: v.$primary
                     &:before
                         // left: 55%
                         transform: translateX(100%)
                 &:focus + .slider
-                    box-shadow: 0 0 1px #64B5F6
+                    box-shadow: 0 0 1px v.$primary
                 
             > .slider
                 position: absolute
@@ -150,18 +157,20 @@
                 left: 0
                 right: 0
                 bottom: 0
-                background-color: #ccc
+                background-color: transparent
                 transition: .4s
                 border-radius: .5rem
+                box-shadow: v.$bs1
 
                 &:before
-                    position: absolute
                     content: ""
+                    position: absolute
                     height: 80%
                     width: 44%
                     left: 6%
                     bottom: 10%
-                    background-color: white
+                    background-color: v.$light
+                    box-shadow: v.$bs2-sm
                     transition: .4s
                     border-radius: .5rem
 
@@ -183,8 +192,10 @@
                         display: flex
                         width: 1.4rem
                         height: 1.4rem
-                        background-color: #EEE
                         border-radius: 2rem
+                        // background-color: #EEE
+                        background-color: transparent
+                        box-shadow: v.$bs1-sm
 
                         // Blue circle in middle when radio button is clicked
                         > span
@@ -194,7 +205,7 @@
                             width: 100%
                             height: 100%
                             border-radius: 2rem
-                            background-color: #64B5F6
+                            background-color: v.$primary
                             opacity: 0
                             transition: opacity .3s
 
@@ -267,23 +278,3 @@
                             border: none
                             outline: none
                             background-color: #EEE
-
-
-.message
-    display: flex
-    position: fixed
-    top: 5rem
-    left: 0
-    right: 0
-    max-width: 80vw
-    margin-left: auto
-    margin-right: auto
-    border: 2px solid #EEE
-    border-radius: .3rem
-    padding: 0.4rem
-    transition: opacity .5s
-
-    &__error
-        background-color: #333
-        color: #ef5350
-        border-color: #ef5350

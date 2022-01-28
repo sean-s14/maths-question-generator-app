@@ -84,7 +84,7 @@ const deselectTopicIfEmpty = (subtopic, parent_topic) => {
             let span_title = $(div).find('label>span').text().trim();
             let input = $(div).find('input');
 
-            span_title = parent_topic
+            span_title == parent_topic
                 ? input.prop('checked', false)
                 : null
         })

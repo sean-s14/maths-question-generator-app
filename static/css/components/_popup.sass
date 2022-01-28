@@ -1,3 +1,4 @@
+@use '../base/_variables' as v
 @use './_scrollbar'
     
 @mixin popup
@@ -11,6 +12,7 @@
     transform: translate(-50%, -50%)
     position: fixed
     background-color: #444
+    box-shadow: v.$bs1-xs
     border-radius: .25rem
     z-index: 20
     pointer-events: all

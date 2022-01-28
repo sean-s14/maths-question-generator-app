@@ -141,3 +141,6 @@ AUTHENTICATION_BACKENDS = [
 LOGIN_URL = '/auth/login/'
 LOGIN_REDIRECT_URL = '/auth/login/'
 LOGOUT_REDIRECT_URL = ''
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+DEFAULT_FROM_EMAIL = os.environ['DJANGO_DEFAULT_FROM_EMAIL']
