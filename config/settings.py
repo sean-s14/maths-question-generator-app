@@ -142,5 +142,9 @@ LOGIN_URL = '/auth/login/'
 LOGIN_REDIRECT_URL = '/auth/login/'
 LOGOUT_REDIRECT_URL = ''
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = "sgbackend.SendGridBackend"
+SENDGRID_SANDBOX_MODE_IN_DEBUG = os.environ['SENDGRID_SANDBOX_MODE_IN_DEBUG']
+SENDGRID_ECHO_TO_STDOUT = os.environ['SENDGRID_ECHO_TO_STDOUT']
+SENDGRID_API_KEY = os.environ["SENDGRID_API_KEY"]
 DEFAULT_FROM_EMAIL = os.environ['DJANGO_DEFAULT_FROM_EMAIL']
+CONTACT_EMAIL = os.environ['DJANGO_CONTACT_EMAIL']

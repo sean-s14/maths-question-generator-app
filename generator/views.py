@@ -1,14 +1,17 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
-from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth.decorators import login_required
 
+# Json
 from django.http import JsonResponse
 import json
 
+# My Stuff
 from .models import Topic, SubTopic, Preset, History
 from .forms import PresetForm, HistoryForm
-# from django.core.paginator import Paginator
 from maths_question_generator import basic_arithmetic
+
+
 
 def home(request):
     topics = Topic.objects.all()
@@ -81,7 +84,7 @@ def preset_edit(request, id):
         if not (form_topics or form_sub_topics):
             # Generate error messages
             messages.error(request,'You must select a topic')
-            return redirect(f'/preset_edit/{id}')
+            return redirect(f'/preset/edit/{id}')
 
         if form.is_valid():
             print('Form is valid!')
@@ -101,6 +104,25 @@ def preset_edit(request, id):
 
     context = {**context, 'preset': preset}
     return render(request, 'generator/preset_create.html', context)
+
+
+@login_required
+def preset_delete(request, id):
+    # TODO: Verify that user owns preset
+    preset = None
+    if request.method == 'POST':
+        try:
+            preset = Preset.objects.get(id=id)
+            title = preset.title
+            preset.delete()
+            messages.success(request, f'Preset {title} has been deleted')
+            return redirect('generator:preset_list')
+        except Preset.DoesNotExist as e:
+            print(e)
+    
+    messages.error(request, 'Preset does not exist')
+    return redirect('generator:preset_detail', id=f'{id}')
+
 
 # TODO: Make two seperate test urls (one for logged in users one for anonymous users)
 def test(request, id):

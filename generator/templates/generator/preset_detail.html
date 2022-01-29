@@ -74,9 +74,12 @@
         <div class="preset_detail__field_container__val">{{preset.date_modified}}</div>
     </div>
     <!-- TODO: Turn into form -->
-    <div class="preset_detail__field_container">
-        <div class="btn btn--outline">Delete Preset</div>
-    </div>
+    <!-- <div class="preset_detail__field_container"> -->
+    <form action="{% url 'generator:preset_delete' preset.id %}" method='POST' class="preset_detail__field_container">
+        {% csrf_token %}
+        <input type="submit" value="Delete Preset" class="btn btn--outline">
+    </form>
+    <!-- </div> -->
 </div>
 <script src="{% static 'js/pages/preset_detail.js' %}"></script>
 {% endblock content %}
