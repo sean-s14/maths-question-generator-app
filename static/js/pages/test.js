@@ -78,6 +78,10 @@ setInterval(() => {
 // END of Timer
 
 const show_continue_popup = () => {
+
+    // If answer value is empty do not submit
+    if (test_btns_answer.prop('value').length == 0) { return };
+
     // Disable answer input until "continue" is clicked
     test_btns_answer.prop('disabled', true);
 
@@ -145,6 +149,10 @@ const next_question = () => {
 
     // Display end of test popup
     if ( question_num >= num_of_test_questions ) {
+        $("[data-new-test]").on('click', e => {
+            window.location.reload();
+            return false;
+        });
 
         // Change height and color
         question_completion_popup.css('height', '30rem');
@@ -233,6 +241,7 @@ const addResultsToHistoryForm = () => {
         sendAjax = false
 
         let presetId = parseInt($("[data-preset-id]").data("preset-id"));
+        if (isNaN(presetId)) { return };
         let score = questions_correct
         let time_completed_in = Date.now() - startingTime;
 

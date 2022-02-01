@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 {% load static %}
 <html lang="en">
+{% load pwa %}
+{% progressive_web_app_meta %}
+<link rel="manifest" href="manifest.json">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -15,16 +18,18 @@
 <body>
 
     <div class="message__container">
-    {% for message in messages %}
-        <div class="message message__{{ message.tags }}__sm">
-            {{ message }}
-            <div style="margin-left: auto;"><i class="fas fa-times-circle"></i></div>
-        </div>
-    {% endfor %}
+        {% for message in messages %}
+            <div class="message message__{{ message.tags }}__sm">
+                <div>
+                    {{ message|safe }}
+                </div>
+                <i class="fas fa-times-circle"></i>
+            </div>
+        {% endfor %}
     </div>
 
     {% include "generator/partials/_navigation.html" %}
-    <div class="hidden cover" data-base-hidden-cover=""></div>
+    <div class="cover hidden" data-base-hidden-cover=""></div>
     
     <div id="page">
         {% block content %}

@@ -18,7 +18,7 @@ load_dotenv() # This is actually loading our .env file
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
+PWA_SERVICE_WORKER_PATH = os.path.join(BASE_DIR, 'static/js', 'serviceworker.js')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'generator.apps.GeneratorConfig',
     'custom_auth.apps.CustomAuthConfig',
+    'custom_pwa',
 ]
 
 MIDDLEWARE = [
@@ -148,3 +149,34 @@ SENDGRID_ECHO_TO_STDOUT = os.environ['SENDGRID_ECHO_TO_STDOUT']
 SENDGRID_API_KEY = os.environ["SENDGRID_API_KEY"]
 DEFAULT_FROM_EMAIL = os.environ['DJANGO_DEFAULT_FROM_EMAIL']
 CONTACT_EMAIL = os.environ['DJANGO_CONTACT_EMAIL']
+
+# PWA
+PWA_APP_NAME = 'maths_question_generator'
+PWA_APP_DESCRIPTION = "Maths Question Generator PWA"
+PWA_APP_THEME_COLOR = '#333333'
+PWA_APP_BACKGROUND_COLOR = '#EEEEEE'
+PWA_APP_DISPLAY = 'standalone'
+PWA_APP_SCOPE = '/'
+PWA_APP_ORIENTATION = 'any'
+PWA_APP_START_URL = '/'
+PWA_APP_STATUS_BAR_COLOR = 'default'
+PWA_APP_ICONS = [
+    {
+        'src': 'static/images/site-logo-160x160.png',
+        'sizes': '160x160'
+    }
+]
+PWA_APP_ICONS_APPLE = [
+    {
+        'src': 'static/images/site-logo-160x160.png',
+        'sizes': '160x160'
+    }
+]
+PWA_APP_SPLASH_SCREEN = [
+    {
+        'src': 'static/images/site-logo-160x160.png',
+        'media': '(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)'
+    }
+]
+PWA_APP_DIR = 'ltr'
+PWA_APP_LANG = 'en-US'

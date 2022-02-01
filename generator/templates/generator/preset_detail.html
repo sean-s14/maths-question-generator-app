@@ -4,8 +4,8 @@
 <div class="cover hidden" data-preset-detail-cover=""></div>
 <div class="preset_detail__container">
     <div class="preset_detail__field_container">
-        <a href="{% url 'generator:preset_edit' preset.id %}" class="btn btn--outline">Edit</a>
-        <a href="{% url 'generator:test' preset.id %}" class="btn btn--outline">Start Test</a>
+        <a href="{% url 'generator:preset_edit' preset.slug %}" class="btn btn--outline">Edit</a>
+        <a href="{% url 'generator:test' preset.slug %}" class="btn btn--outline">Start Test</a>
     </div>
     <div class="preset_detail__field_container">
         <div class="preset_detail__field_container__key">Title</div>
@@ -75,7 +75,10 @@
     </div>
     <!-- TODO: Turn into form -->
     <!-- <div class="preset_detail__field_container"> -->
-    <form action="{% url 'generator:preset_delete' preset.id %}" method='POST' class="preset_detail__field_container">
+    <form 
+        action="{% url 'generator:preset_delete' preset.slug %}" method='POST' 
+        class="preset_detail__field_container"
+    >
         {% csrf_token %}
         <input type="submit" value="Delete Preset" class="btn btn--outline">
     </form>

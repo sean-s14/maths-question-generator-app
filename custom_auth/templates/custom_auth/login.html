@@ -7,5 +7,7 @@
     {{form.username}}
     {{form.password}}
     <input type="submit" value='Login' class="btn btn--outline input">
+    <hr class="hr">
+    <a href="{% url 'custom_auth:signup' %}" class="btn btn--outline">Register</a>
 </form>
 {% endblock content %}

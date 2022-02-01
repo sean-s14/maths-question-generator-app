@@ -1,0 +1,51 @@
+{% extends 'generator/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="cover hidden" data-account-view-cover=""></div>
+<div class="model_view__container">
+    
+    <div class="model_view__field_container box-shadow-none">
+        <a href="{% url 'custom_auth:account_edit' %}" class="btn btn--outline">
+            Edit Account Details
+        </a>
+    </div>
+    
+    <div class="model_view__field_container">
+        <div class="model_view__field_container__key">Premium User</div>
+        <!-- TODO: Add is_premium to user model -->
+        <!-- <div class="model_view__field_container__val">{{user.is_premium}}</div> -->
+    </div>
+
+    <div class="model_view__field_container">
+        <div class="model_view__field_container__key">Username</div>
+        <div class="model_view__field_container__val">{{user.username}}</div>
+    </div>
+
+    <div class="model_view__field_container">
+        <div class="model_view__field_container__key">Email</div>
+        <div class="model_view__field_container__val">{{user.email}}</div>
+    </div>
+
+    <div class="model_view__field_container">
+        <div class="model_view__field_container__key">Date Created</div>
+        <div class="model_view__field_container__val">{{user.date_joined}}</div>
+    </div>
+
+    <div class="model_view__field_container box-shadow-none" data-delete-account-popup-trigger="">
+        <div class="btn btn--outline btn--outline--danger">Delete Account</div>
+    </div>
+    <form 
+        action="{% url 'custom_auth:account_delete' %}" method='POST'
+        id="form_delete_popup" class="hidden"
+    >
+        {% csrf_token %}
+        {{form_delete.password}}
+        <input type="submit" value="Delete Account" class="btn btn--outlin btn--danger">
+    </form>
+
+</div>
+
+
+<script src="{% static 'js/pages/account_view.js' %}"></script>
+{% endblock content %}

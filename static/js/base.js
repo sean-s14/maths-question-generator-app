@@ -7,9 +7,18 @@ const base_hidden_cover = $("[data-base-hidden-cover]");  // Cover to close side
 nav_toggle.on('click', e => {
     let isMenuActive = menu_toggle.prop('checked');
 
-    isMenuActive
-        ? base_hidden_cover.addClass('hidden')
-        : base_hidden_cover.removeClass('hidden')
+    // isMenuActive
+    //     ? base_hidden_cover.addClass('hidden')
+    //     : base_hidden_cover.removeClass('hidden')
+    base_hidden_cover.removeClass('hidden');
+
+    if ( isMenuActive ) {
+        base_hidden_cover.css('opacity', 0);
+        base_hidden_cover.css('pointerEvents', 'none');
+    } else {
+        base_hidden_cover.css('opacity', 0.5);
+        base_hidden_cover.css('pointerEvents', 'all');
+    }
 })
 
 base_hidden_cover.on('click', e => {

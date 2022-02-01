@@ -1,0 +1,11 @@
+{% autoescape off %}
+    <p>
+        A confirmation email has been sent to {{email}}. 
+        Please confirm before trying to log in to your account. 
+        Didn't receive an email? Click 
+        <a href="{% url 'custom_auth:resend_confirmation' uidb64=uid token=token %}">
+            here
+        </a> 
+         to re-send email.
+    </p>
+{% endautoescape %}

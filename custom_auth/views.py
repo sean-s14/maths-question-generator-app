@@ -4,9 +4,16 @@ from django.core.validators import validate_email
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout, get_user_model
 from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth.hashers import check_password
 
 # Mine
-from .forms import CustomUserCreationForm, CustomUserLoginForm
+from .forms import (
+    CustomUserCreationForm, 
+    CustomUserLoginForm, 
+    CustomUserEditForm,
+    CustomUserDeleteForm,
+)
+from .send_email import send_email
 
 # Sendgrid
 from django.conf import settings
@@ -35,27 +42,26 @@ def signup_view(request):
             email = form.cleaned_data.get('email')
 
             current_site = get_current_site(request)
-            html_content = render_to_string('custom_auth/activate_account.html', {
+            
+            html_content = render_to_string('custom_auth/email/activate_account.html', {
                 'user': user,
                 'domain': current_site.domain,
                 'uid': urlsafe_base64_encode(force_bytes(user.pk)),
                 'token': token,
             })
 
-            message = Mail(
-                from_email=settings.DEFAULT_FROM_EMAIL,
-                to_emails=email,
-                subject='Confirmation e-mail for Maths Question Generator',
-                html_content=html_content
-            )
-
-            try:
-                sg = SendGridAPIClient(settings.SENDGRID_API_KEY)
-                response = sg.send(message)
-            except Exception as e:
-                print(e)
+            subject = 'Confirmation e-mail for Maths Question Generator'
+            
+            send_email(request, email, subject, html_content)
                 
-            messages.info(request, f'A confirmation email has been sent to {email}. Please confirm before trying to log in to your account.')
+            message_content = render_to_string('custom_auth/email/resend_confirmation.html', {
+                'email': email,
+                'domain': current_site.domain,
+                'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+                'token': token,
+            })
+
+            messages.info(request, message_content)
             return redirect('custom_auth:login')
         else:
             print('Form is NOT valid...')
@@ -64,6 +70,41 @@ def signup_view(request):
 
     context = {'form': form, 'active': 'signup'}
     return render(request, 'custom_auth/signup.html', context)
+
+
+def resend_confirmation(request, uidb64, token):
+
+    try:
+        uid = force_str(urlsafe_base64_decode(uidb64))
+        user = UserModel.objects.get(pk=uid)
+    except(TypeError, ValueError, OverflowError, UserModel.DoesNotExist):
+        user = None
+
+    if user is not None and account_activation_token.check_token(user, token):
+        email = user.email
+        
+        current_site = get_current_site(request)
+        html_content = render_to_string('custom_auth/email/activate_account.html', {
+            'user': user,
+            'domain': current_site.domain,
+            'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+            'token': token,
+        })
+            
+        subject = 'Re-send confirmation email'  # Probably not necessary
+        send_email(request, email, subject, html_content)
+
+        html_content = render_to_string('custom_auth/email/resend_confirmation.html', {
+            'email': email,
+            'domain': current_site.domain,
+            'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+            'token': token,
+        })
+        messages.info(request, html_content)
+    else:
+        messages.error(request, 'Activation link is invalid or User does not exist.')
+
+    return redirect('custom_auth:login')
 
 
 def activate(request, uidb64, token):
@@ -116,15 +157,28 @@ def login_view(request):
                     print('user does not exist...')
                 
                 if user.is_active:
-                    print('User is active. Something went wrong.')
+                    # print('User is active. Something went wrong.')
+                    pass
                 else:  # User is not active
-                    messages.error(request,'You must verify your email address before logging in to your account')
+
+                    email = user.email
+                    token = account_activation_token.make_token(user)
+                    
+                    current_site = get_current_site(request)
+                    html_content = render_to_string('custom_auth/email/login_fail_resend_confirmation.html', {
+                        'email': email,
+                        'domain': current_site.domain,
+                        'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+                        'token': token,
+                    })
+                    messages.error(request, html_content)
                     return redirect('custom_auth:login')
 
-                print('User:', user, user.is_active)
-                print('User is none...')
+                # print('User:', user, user.is_active)
+                # print('User is none...')
         else:
-            print('Form is not valid...')
+            # print('Form is not valid...')
+            pass
 
     else:
         form = CustomUserLoginForm()
@@ -139,3 +193,54 @@ def logout_view(request):
     logout(request)
     messages.success(request, 'Successfully logged out!')
     return redirect('generator:home')
+
+
+@login_required
+def account_view(request):
+    user = None
+    user = request.user
+
+    form_delete = CustomUserDeleteForm()
+    context = {'active': 'account','user': user, 'form_delete': form_delete}
+    return render(request, 'custom_auth/account_view.html', context)
+
+
+@login_required
+def account_edit(request):
+    user = request.user
+    
+    if request.method == 'POST':
+        form = CustomUserEditForm(request.POST or None, instance=user)
+
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Your account details have beend updated.')
+            return redirect('custom_auth:account_view')
+        else:
+            messages.error('Details invalid!')
+            return redirect('custom_auth:account_edit')
+    else:
+        form = CustomUserEditForm(instance=user)
+
+    context = {'form': form}
+    return render(request, 'custom_auth/account_edit.html', context)
+
+
+@login_required
+def account_delete(request):
+    user = request.user
+    username = user.username
+    if request.method == 'POST':
+        form = CustomUserDeleteForm(request.POST)
+        if form.is_valid():
+            password = form.cleaned_data['password']
+            encoded_password = user.password
+            passed = check_password(password, encoded_password)
+            if passed:
+                user.delete()
+                messages.success(request, f'Your account "{username}" has been deleted')
+                return redirect('generator:home')
+
+    messages.error(request, f'Could not delete account "{username}"')
+    return redirect(request, 'custom_auth:account_view')
+

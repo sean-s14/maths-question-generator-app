@@ -77,7 +77,7 @@ class Preset(models.Model):
 
 class History(models.Model):
     user                = models.ForeignKey(USER, on_delete=models.CASCADE)
-    preset              = models.ForeignKey(Preset, on_delete=models.SET_NULL, null=True, blank=True)
+    preset              = models.ForeignKey(Preset, on_delete=models.CASCADE)
     score               = models.IntegerField()
     time_completed_in   = models.IntegerField()  # Milliseconds
     date_created        = models.DateTimeField(auto_now_add=True, blank=True, null=True)

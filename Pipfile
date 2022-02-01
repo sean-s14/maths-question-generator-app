@@ -8,6 +8,7 @@ django = "*"
 math-question-generator = "*"
 python-dotenv = "*"
 sendgrid = "*"
+django-pwa = "*"
 
 [dev-packages]
 

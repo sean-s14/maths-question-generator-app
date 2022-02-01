@@ -1,11 +1,11 @@
 @use '../base/_variables' as v
-@use './_scrollbar'
+@use './_scrollbar' as s
     
 @mixin popup
     max-height: 80vh
     height: 25rem
     max-width: 80vw
-    width: 25rem
+    width: 30rem
     padding: 0.5rem
     top: 50%
     left: 50%
@@ -14,10 +14,10 @@
     background-color: #444
     box-shadow: v.$bs1-xs
     border-radius: .25rem
-    z-index: 20
+    z-index: 31
     pointer-events: all
     opacity: 1
     transition: opacity 0.4s
     overflow-y: scroll
 
-    @include scrollbar.scrollbar
+    @include s.scrollbar

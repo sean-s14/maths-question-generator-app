@@ -1,0 +1,10 @@
+{% autoescape off %}
+    <p>
+        You must verify your email before logging in to your account.
+        Didn't receive an email? Click 
+        <a href="{% url 'custom_auth:resend_confirmation' uidb64=uid token=token %}">
+            here
+        </a> 
+         to re-send email.
+    </p>
+{% endautoescape %}

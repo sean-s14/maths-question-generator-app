@@ -1,0 +1,29 @@
+@use '../base/_variables' as v
+@use '../components/_popup' as p
+@use '../components/_scrollbar' as s
+    
+#form_delete_popup
+    @include p.popup
+    @include s.scrollbar($width:0, $height:0)
+    overflow: none
+    height: max-content
+    width: max-content
+    padding: 2rem 2rem 0 2rem
+    display: flex
+    flex-direction: column
+    align-items: center
+    justify-content: center
+    box-shadow: 0 0 5px v.$error, 0 0 15px v.$error, 0 0 50px v.$error !important
+
+    > input
+        box-shadow: 0 6px 6px -6px v.$error
+        margin-bottom: 2rem
+        width: 15rem
+        max-width: 15rem
+
+        &:focus
+            box-shadow: 0 0 2px v.$error, 0 0 6px v.$error, 0 0 10px v.$error inset
+
+        &[type="submit"]
+            &:focus
+                background-color: v.$error

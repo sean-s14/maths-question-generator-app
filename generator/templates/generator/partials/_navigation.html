@@ -66,7 +66,28 @@
         <span class="route_title">History</span>
     </a>
     <hr style="width: 90%; margin: 1rem 0;">
-    {% if not user.is_authenticated %}
+    {% if user.is_authenticated %}
+        <a 
+            href="{% url 'custom_auth:account_view' %}"
+            class="nav__menu__side__route"
+        >
+            {% if active == 'account' %}
+                <span class="active"></span>
+            {% endif %}
+            <i class="fas fa-user fa-lg"></i>
+            <span class="route_title">Account</span>
+        </a>
+        <a 
+            href="{% url 'custom_auth:logout' %}"
+            class="nav__menu__side__route"
+        >
+            {% if active == 'logout' %}
+                <span class="active"></span>
+            {% endif %}
+            <i class="fas fa-sign-out-alt fa-lg"></i>
+            <span class="route_title">Logout</span>
+        </a>
+    {% else %}
         <a 
             href="{% url 'custom_auth:login' %}"
             class="nav__menu__side__route"
@@ -86,18 +107,6 @@
             {% endif %}
             <i class="fas fa-user-plus fa-lg"></i>
             <span class="route_title">Signup</span>
-        </a>
-    {% endif %}
-    {% if user.is_authenticated %}
-        <a 
-            href="{% url 'custom_auth:logout' %}"
-            class="nav__menu__side__route"
-        >
-            {% if active == 'logout' %}
-                <span class="active"></span>
-            {% endif %}
-            <i class="fas fa-sign-out-alt fa-lg"></i>
-            <span class="route_title">Logout</span>
         </a>
     {% endif %}
 </div>

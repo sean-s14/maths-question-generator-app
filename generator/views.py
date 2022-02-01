@@ -8,9 +8,8 @@ import json
 
 # My Stuff
 from .models import Topic, SubTopic, Preset, History
-from .forms import PresetForm, HistoryForm
-from maths_question_generator import basic_arithmetic
-
+from .forms import PresetForm, HistoryForm, TestForm
+from .utils import generate_questions
 
 
 def home(request):
@@ -28,8 +27,8 @@ def preset_list(request):
 
 
 @login_required
-def preset_detail(request, id):
-    preset = get_object_or_404(Preset, pk=id)
+def preset_detail(request, slug):
+    preset = get_object_or_404(Preset, slug=slug)
     context = {'preset': preset}
     return render(request, 'generator/preset_detail.html', context)
 
@@ -42,10 +41,11 @@ def preset_create(request):
         form = PresetForm(request.POST)
         form_topics = form['topics'].value()
         form_sub_topics = form['sub_topics'].value()
+        print(request.POST.get('begin'))
 
         if not (form_topics or form_sub_topics):
             messages.error(request,'You must select a topic')
-            return redirect('/preset_create/')
+            return redirect('generator:preset_create')
 
         if form.is_valid():
             print('Form is valid!')
@@ -56,7 +56,11 @@ def preset_create(request):
             form.save_m2m()
 
             messages.success(request, 'New topic created!')
-            return redirect('/presets/')
+
+            if request.POST.get('begin') == 'Save & Begin Test':
+                return redirect('generator:test', id=instance.id)
+
+            return redirect('generator:preset_list')
 
         else:
             print('Form is NOT valid...')
@@ -72,9 +76,9 @@ def preset_create(request):
 
 
 @login_required
-def preset_edit(request, id):
+def preset_edit(request, slug):
     context = {}
-    preset = Preset.objects.get(id=id)
+    preset = Preset.objects.get(slug=slug)
 
     if request.method == 'POST':
         form = PresetForm(request.POST, instance=preset)
@@ -84,12 +88,12 @@ def preset_edit(request, id):
         if not (form_topics or form_sub_topics):
             # Generate error messages
             messages.error(request,'You must select a topic')
-            return redirect(f'/preset/edit/{id}')
+            return redirect('generator:preset_edit', slug=slug)
 
         if form.is_valid():
             print('Form is valid!')
             form.save()
-            return redirect(f'/presets/{id}/')
+            return redirect('generator:preset_list', slug=slug)
 
         print('Form is NOT valid...')
     
@@ -107,12 +111,12 @@ def preset_edit(request, id):
 
 
 @login_required
-def preset_delete(request, id):
+def preset_delete(request, slug):
     # TODO: Verify that user owns preset
     preset = None
     if request.method == 'POST':
         try:
-            preset = Preset.objects.get(id=id)
+            preset = Preset.objects.get(slug=slug)
             title = preset.title
             preset.delete()
             messages.success(request, f'Preset {title} has been deleted')
@@ -120,40 +124,57 @@ def preset_delete(request, id):
         except Preset.DoesNotExist as e:
             print(e)
     
-    messages.error(request, 'Preset does not exist')
-    return redirect('generator:preset_detail', id=f'{id}')
+    messages.error(request, 'Unable to delete preset that does not exist')
+    return redirect('generator:preset_detail', slug=slug)
 
 
 # TODO: Make two seperate test urls (one for logged in users one for anonymous users)
-def test(request, id):
-    preset = get_object_or_404(Preset, pk=id)
+@login_required
+def test(request, slug):
+    preset = get_object_or_404(Preset, slug=slug)
 
-    sub_topics = [sub_topic['title'] for sub_topic in preset.sub_topics.values()]
+    sub_topics = preset.sub_topics.values()
+    question_count = preset.question_count
+    sub_topics = [sub_topic['title'] for sub_topic in sub_topics]
+    questions = generate_questions(question_count=question_count, sub_topics=sub_topics)
 
-    add = True if 'Addition' in sub_topics else False
-    sub = True if 'Subtraction' in sub_topics else False
-    mul = True if 'Multiplication' in sub_topics else False
-    div = True if 'Division' in sub_topics else False
-
-    questions = []
-    while len(questions) < preset.question_count:
-        q_and_a = basic_arithmetic(
-            add=add,
-            sub=sub,
-            mul=mul,
-            div=div,
-            min_res=0,
-            max_res=1000
-        )
-        questions.append(q_and_a)
-
-
-    context = {'questions': questions, 'preset': preset}
+    context = {'is_temp': False, 'questions': questions, 'preset': preset}
     return render(request, 'generator/test.html', context)
 
 
+def test_create(request):
+    context = {}
+
+    if request.method == 'POST':
+        form = TestForm(request.POST)
+        
+        if form.is_valid():
+            questions   = form.cleaned_data.get('question_count')
+            sub_topics  = form.cleaned_data.get('sub_topics')
+
+            timer       = form.cleaned_data.get('timer')
+            timer_type  = form.cleaned_data.get('timer_type')
+            timer_length = form.cleaned_data.get('timer_length')
+
+            sub_topics = [sub_topic.title for sub_topic in sub_topics]
+            questions = generate_questions(questions, sub_topics)
+
+            context = {'questions': questions}
+            # TODO: Change this
+            return render(request, 'generator/test.html', context)
+    else:
+        form = TestForm()
+        topics = Topic.objects.all()
+        sub_topics = SubTopic.objects.all()
+        context = {'topics': topics, 'sub_topics': sub_topics}
+        
+    context = {**context, 'is_temp': True, 'form': form}
+    return render(request, 'generator/preset_create.html', context)
+
 @login_required
 def history_view(request):
+
+    print('History View was hit')
 
     if request.method == 'POST':
         json_request = json.loads(request.body)
@@ -169,6 +190,7 @@ def history_view(request):
             print('Form is NOT valid...')
             return JsonResponse({'response': 'Failure...'})
     
+    print('Requesting history.html')
     history = History.objects.filter(user=request.user).order_by('-date_created')
     context = {'history': history}
     return render(request, 'generator/history.html', context)

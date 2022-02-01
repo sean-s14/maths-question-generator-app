@@ -25,17 +25,25 @@
         </div>
 
         <!-- Buttons for "New Test" & "Return to Presets" -->
-        <div class="test__complete__btns">
-            <a href="{% url 'generator:test' preset.id %}" class="btn btn--outline input" data-new-test="" data-submit=''>
-                New Test <i class="fas fa-redo-alt"></i>
-            </a>
-            <a href="{% url 'generator:preset_list' %}" class="btn btn--outline input" data-submit=''>
-                Return to Presets
-            </a>
-            <a href="{% url 'generator:history' %}" class="btn btn--outline input" data-submit=''>
-                View History
-            </a>
-        </div>
+        {% if preset %}
+            <div class="test__complete__btns">
+                <a href="{% url 'generator:test' preset.slug %}" class="btn btn--outline input" data-new-test="" data-submit=''>
+                    Restart Test <i class="fas fa-redo-alt"></i>
+                </a>
+                <a href="{% url 'generator:preset_list' %}" class="btn btn--outline input" data-submit=''>
+                    Return to Presets
+                </a>
+                <a href="{% url 'generator:history' %}" class="btn btn--outline input" data-submit=''>
+                    View History
+                </a>
+            </div>
+        {% else %}
+            <div class="test__complete__btns">
+                <a href="" class="btn btn--outline input" data-new-test="" data-submit=''>
+                    Restart Test <i class="fas fa-redo-alt"></i>
+                </a>
+            </div>
+        {% endif %}
 
         <!-- Table [ question | answer | user_answer | correct? ] -->
         <table class="test__complete__table">

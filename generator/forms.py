@@ -25,6 +25,23 @@ class PresetForm(ModelForm):
         self.fields["question_count"].widget.attrs["class"] = "input"
 
 
+class TestForm(ModelForm):
+    class Meta:
+        model = Preset
+        fields = ('question_count', 'difficulty', 'topics', 'sub_topics', 
+        'timer', 'timer_type', 'timer_length')
+        labels = {
+            'question_count': _('Questions'),
+            'sub_topics': _('Sub Topics'),
+            'timer_type': _('Timer Type'),
+            'timer_length': _('Timer Length')
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["question_count"].widget.attrs["class"] = "input"
+
+
 class HistoryForm(ModelForm):
 
     class Meta:

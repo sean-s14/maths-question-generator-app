@@ -1,0 +1,11 @@
+{% extends 'generator/base.html' %}
+{% load static %}
+
+{% block content %}
+<form action="{% url 'custom_auth:account_edit' %}" method="POST" class="auth__form">
+    {% csrf_token %}
+    {{form.username}}
+    {{form.email}}
+    <input type="submit" value='Save' class="btn btn--outline input">
+</form>
+{% endblock content %}

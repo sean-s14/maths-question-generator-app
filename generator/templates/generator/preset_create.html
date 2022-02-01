@@ -5,19 +5,24 @@
 <div class="hidden" data-preset-create-cover=""></div>
 <form 
     {% if preset %}
-        action="{% url 'generator:preset_edit' preset.id %}" 
+        action="{% url 'generator:preset_edit' preset.id %}"
+    {% elif is_temp == True %}
+        action="{% url 'generator:test_create' %}"
+    {% else %}
+        action="{% url 'generator:preset_create' %}" 
     {% endif %}
-    action="{% url 'generator:preset_create' %}" 
     method="POST" 
     class="preset__form"
 >
     {% csrf_token %}
 
     <!-- Title -->
-    <div class="preset__field">
-        <label for="id_title">{{ form.title.label }}:</label>
-        {{ form.title }}
-    </div>
+    {% if form.title %}
+        <div class="preset__field">
+            <label for="id_title">{{ form.title.label }}:</label>
+            {{ form.title }}
+        </div>
+    {% endif %}
 
     <!-- Topics & Sub-Topics -->
     <div class="preset__field">
@@ -75,13 +80,13 @@
 
     <!-- Difficulty -->
     <!-- TODO: Include difficulty in math-generator package -->
-    <!-- <div class="preset__field">
+    <div class="preset__field d-none">
         <label for="id_difficulty">{{ form.difficulty.label }}:</label>
         {{ form.difficulty }}
-    </div> -->
+    </div>
 
     <!-- Timer -->
-    <div class="preset__field">
+    <div class="preset__field d-none">
         <label for="id_timer">{{ form.timer.label }}:</label>
         <div class="d-none">{{ form.timer }}</div>
         <label class="preset__field__timer" for="id_timer_checkbox">
@@ -189,8 +194,12 @@
     </div>
 
     <!-- Save Buttons -->
-    <input type="submit" value="Save & Begin" name="begin" class="btn btn--outline">
-    <input type="submit" value="Save" class="btn btn--outline">
+    {% if is_temp == True %}
+        <input type="submit" value="Begin Test" class="btn btn--outline">
+    {% else %}
+        <input type="submit" value="Save & Begin Test" name="begin" class="btn btn--outline">
+        <input type="submit" value="Save" class="btn btn--outline">
+    {% endif %}
 </form>
 
 <script src="{% static 'js/preset_create.js' %}"></script>
