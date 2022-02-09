@@ -44,11 +44,15 @@ INSTALLED_APPS = [
     'generator.apps.GeneratorConfig',
     'custom_auth.apps.CustomAuthConfig',
     # 3rd Party
+    'whitenoise.runserver_nostatic',
     'custom_pwa',  # Technically this is custom but its copied
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    # 3rd party
+    'whitenoise.middleware.WhiteNoiseMiddleware',
+
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -88,6 +92,9 @@ DATABASES = {
     }
 }
 
+import dj_database_url
+db_from_env = dj_database_url.config(conn_max_age=600)
+DATABASES['default'].update(db_from_env)
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
@@ -126,6 +133,7 @@ USE_TZ = True
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [ os.path.join(BASE_DIR, "static") ]
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 # MEDIA_URL = '/images/'
 # MEDIA_ROOT = os.path.join(BASE_DIR, 'static/images')
 

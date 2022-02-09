@@ -9,6 +9,10 @@ math-question-generator = "*"
 python-dotenv = "*"
 sendgrid = "*"
 stripe = "*"
+gunicorn = "*"
+whitenoise = "*"
+dj-database-url = "*"
+psycopg2 = "*"
 
 [dev-packages]
 
