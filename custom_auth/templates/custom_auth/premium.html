@@ -1,0 +1,62 @@
+{% extends 'generator/base.html' %}
+{% load static %}
+
+{% block content %}
+    
+    <!-- Display a payment form -->
+    <form 
+        action="{% url 'custom_auth:create_checkout_session' %}" 
+        method="POST" id="payment-form"
+        class="form__premium"
+    >
+        {% csrf_token %}
+
+        {% for price in prices %}
+            <div style="display: flex; align-items: center" class="form__premium__option">
+                <input 
+                    type="radio" 
+                    name="premium_plan" 
+                    id="{{price.id}}" 
+                    value="{{price.id}}"
+                    {% if price.interval == 'month' %}checked{% endif %}
+                >
+
+                <label for="{{price.id}}">
+                    <div>£{{price.amount}} / {{price.interval}}</div> 
+                    {% if price.interval == 'year' %}<span>(44% cheaper)</span>{% endif %}
+                </label>
+            </div>
+        {% endfor %}
+
+        
+        <button
+            id="submit" type="submit" 
+            {% if user.is_premium == True %}disabled{% endif %}
+            class="btn btn--outline"
+        >
+            Subscribe
+        </button>
+    </form>
+
+    {% if user.is_premium == True and will_renew == False %}
+        <div class="btn btn--danger btn__cancel-subscription" data-delete-account-popup-trigger="">
+            Cancel Subscription
+        </div>
+        
+        
+        <div class="cover hidden" data-account-view-cover=""></div>
+        <form 
+            action="{% url 'custom_auth:cancel_subscription' %}" method='POST'
+            id="form_delete_popup" class="hidden"
+        >
+            {% csrf_token %}
+            <div style="margin-bottom: 2rem; text-align: center; font-size: 1.2rem;">
+                Are you sure you want to end your subscription?
+            </div>
+            <input type="submit" value="Yes" class="btn btn--outlin btn--danger">
+            <!-- TODO: Add option for "no" and add corresponding javascript code -->
+        </form>
+    {% endif %}
+
+<script src="{% static 'js/pages/premium.js' %}"></script>
+{% endblock content %}

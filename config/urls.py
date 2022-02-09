@@ -20,5 +20,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('auth/', include('custom_auth.urls')),
     path('', include('generator.urls')),
-    path('', include('custom_pwa.urls'))
+    path('', include('custom_pwa.urls')),
 ]

@@ -1,7 +1,7 @@
 {% extends 'generator/base.html' %}
 {% load static %}
 {% block content %}
-<div class="cover hidden" data-preset-detail-cover=""></div>
+
 <div class="preset_detail__container">
     <div class="preset_detail__field_container">
         <a href="{% url 'generator:preset_edit' preset.slug %}" class="btn btn--outline">Edit</a>
@@ -42,47 +42,63 @@
             </ul>
         </div>
     </div>
+
     <!-- TODO: Add this once difficulty is sorted out -->
     <!-- <div class="preset_detail__field_container">
         <div class="preset_detail__field_container__key">Difficulty</div>
         <div class="preset_detail__field_container__val">{{preset.difficulty}}</div>
     </div> -->
-    <div class="preset_detail__field_container">
+
+    <!-- <div class="preset_detail__field_container">
         <div class="preset_detail__field_container__key">Timer</div>
         <div class="preset_detail__field_container__val">{{preset.timer}}</div>
-    </div>
-    <div class="preset_detail__field_container">
+    </div> -->
+
+    <!-- TODO: Change timer type to display stopwatch or countdown -->
+    <!-- <div class="preset_detail__field_container">
         <div class="preset_detail__field_container__key">Timer Type</div>
-        <!-- TODO: Change timer type to display stopwatch or countdown -->
         <div class="preset_detail__field_container__val">{{preset.timer_type}}</div>
-    </div>
-    <div class="preset_detail__field_container">
+    </div> -->
+    
+    <!-- TODO: Convert timer length to hours/minutes/seconds -->
+    <!-- <div class="preset_detail__field_container">
         <div class="preset_detail__field_container__key">Timer Length</div>
-        <!-- TODO: Convert timer length to hours/minutes/seconds -->
         <div class="preset_detail__field_container__val">{{preset.timer_length}}</div>
-    </div>
+    </div> -->
+
     <div class="preset_detail__field_container">
         <div class="preset_detail__field_container__key">Best Record</div>
         <div class="preset_detail__field_container__val">{{preset.best_record}}</div>
     </div>
+    
     <div class="preset_detail__field_container">
         <div class="preset_detail__field_container__key">Date Created</div>
         <div class="preset_detail__field_container__val">{{preset.date_created}}</div>
     </div>
+    
     <div class="preset_detail__field_container">
         <div class="preset_detail__field_container__key">Date Modified</div>
         <div class="preset_detail__field_container__val">{{preset.date_modified}}</div>
     </div>
-    <!-- TODO: Turn into form -->
-    <!-- <div class="preset_detail__field_container"> -->
+
+    <!-- Preset Deletion -->
+    <div class="preset_detail__field_container">
+        <div class="btn btn--outline" data-delete-preset-popup-trigger="">Delete Preset</div>
+    </div>
+    
+    <div class="cover hidden" data-preset-view-cover=""></div>
     <form 
-        action="{% url 'generator:preset_delete' preset.slug %}" method='POST' 
-        class="preset_detail__field_container"
+        action="{% url 'generator:preset_delete' preset.slug %}" method='POST'
+        id="form_delete_popup" class="hidden"
     >
         {% csrf_token %}
-        <input type="submit" value="Delete Preset" class="btn btn--outline">
+        <div style="margin-bottom: 2rem; text-align: center; font-size: 1.2rem;">
+            Are you sure you want to delete this preset?
+        </div>
+        <input type="submit" value="Yes" class="btn btn--outlin btn--danger">
     </form>
-    <!-- </div> -->
+
 </div>
+
 <script src="{% static 'js/pages/preset_detail.js' %}"></script>
 {% endblock content %}

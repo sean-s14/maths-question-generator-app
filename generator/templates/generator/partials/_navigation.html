@@ -65,7 +65,20 @@
         <i class="fas fa-history fa-lg"></i>
         <span class="route_title">History</span>
     </a>
+    
     <hr style="width: 90%; margin: 1rem 0;">
+
+    <a 
+        href="{% url 'custom_auth:premium_view' %}"
+        class="nav__menu__side__route"
+    >
+        {% if active == 'premium' %}
+            <span class="active"></span>
+        {% endif %}
+        <i class="fas fa-crown fa-lg"></i>
+        <span class="route_title">Premium</span>
+    </a>
+    
     {% if user.is_authenticated %}
         <a 
             href="{% url 'custom_auth:account_view' %}"

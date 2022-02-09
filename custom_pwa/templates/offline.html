@@ -1,11 +1,19 @@
-{% load static %}<!DOCTYPE html>
+{% load static %}
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="shortcut icon" href="#">
     <title>Default offline template</title>
     <link href="{% static '/css/django-pwa-app.css' %}" rel="stylesheet">
 </head>
-<body>
-<h1>You are currently not connected to any networks.</h1>
+<body style="padding: 2rem;">
+    <a 
+        href="{% url 'generator:home' %}" 
+        style="padding: .8rem 1rem; background-color: #64B5F6; border-radius: .25rem; color: #EEE"
+    >
+        &lt; Go back home
+    </a>
+    <h1>Something went wrong.</h1>
 </body>
 </html>

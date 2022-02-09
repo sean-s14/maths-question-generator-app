@@ -1,13 +1,17 @@
-const preset_detail_topics_popup_btn = $("[data-preset-detail-topics]");
-const preset_detail_topics_popup = $("#detail_topics_popup");
-const preset_detail_hidden_cover = $("[data-preset-detail-cover]");
+const hidden = $("[data-preset-view-cover]");
 
-preset_detail_topics_popup_btn.on('click', e => {
-    preset_detail_hidden_cover.removeClass("hidden");
-    preset_detail_topics_popup.removeClass("hidden");
+const delete_preset_popup_trigger = $("[data-delete-preset-popup-trigger]");
+const delete_preset_popup = $("#form_delete_popup");
+
+hidden.on('click', e => {
+    hidden.addClass('hidden');
+    hidden.removeClass('cover');
+    delete_preset_popup.addClass('hidden');
 })
 
-preset_detail_hidden_cover.on('click', e => {
-    preset_detail_hidden_cover.addClass("hidden");
-    preset_detail_topics_popup.addClass("hidden");
+delete_preset_popup_trigger.on('click', e => {
+    hidden.removeClass('hidden');
+    hidden.addClass('cover');
+    delete_preset_popup.removeClass('hidden');
+    $('#page').css('overflow', 'hidden');
 })

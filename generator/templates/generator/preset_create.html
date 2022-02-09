@@ -5,7 +5,7 @@
 <div class="hidden" data-preset-create-cover=""></div>
 <form 
     {% if preset %}
-        action="{% url 'generator:preset_edit' preset.id %}"
+        action="{% url 'generator:preset_edit' preset.slug %}"
     {% elif is_temp == True %}
         action="{% url 'generator:test_create' %}"
     {% else %}

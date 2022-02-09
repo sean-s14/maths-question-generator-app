@@ -126,23 +126,6 @@ submit_btn.on('click', e => {
 
 test_btns_answer.on('keypress', e => e.which == 13 ? show_continue_popup() : null );
 
-function getCookie(name) {
-    var cookieValue = null;
-    if (document.cookie && document.cookie !== '') {
-        var cookies = document.cookie.split(';');
-        for (var i = 0; i < cookies.length; i++) {
-            var cookie = cookies[i].trim();
-            // Does this cookie string begin with the name we want?
-            if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                break;
-            }
-        }
-    }
-    return cookieValue;
-}
-var csrftoken = getCookie('csrftoken');
-
 
 const next_question = () => {
     let num_of_test_questions = test_container_questions.length
@@ -255,7 +238,7 @@ const addResultsToHistoryForm = () => {
             url: '/history/',
             headers: {
                 'Content-Type': 'application/json',
-                'X-CSRFToken': csrftoken
+                'X-CSRFToken': csrftoken  // Accessed from base.js
             },
             method: 'POST',
             data: JSON.stringify(data),

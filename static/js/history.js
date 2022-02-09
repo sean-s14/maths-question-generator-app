@@ -40,8 +40,8 @@ const convertTimeIntToStr = (value) => {
 
 time_completed_in.each( (index, time) => {
     // TODO: Modify convertTimeIntToStr function
-    console.log($(time).text().trim())
+    // console.log($(time).text().trim())
     let new_time = convertTimeIntToStr($(time).text().trim());
-    console.log(new_time);
+    // console.log(new_time);
     $(time).text(new_time);
 })

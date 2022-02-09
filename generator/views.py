@@ -58,7 +58,7 @@ def preset_create(request):
             messages.success(request, 'New topic created!')
 
             if request.POST.get('begin') == 'Save & Begin Test':
-                return redirect('generator:test', id=instance.id)
+                return redirect('generator:test', slug=instance.slug)
 
             return redirect('generator:preset_list')
 
@@ -93,7 +93,7 @@ def preset_edit(request, slug):
         if form.is_valid():
             print('Form is valid!')
             form.save()
-            return redirect('generator:preset_list', slug=slug)
+            return redirect('generator:preset_detail', slug=slug)
 
         print('Form is NOT valid...')
     

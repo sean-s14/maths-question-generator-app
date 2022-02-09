@@ -2,7 +2,9 @@
 {% load static %}
 
 {% block content %}
+
 <div class="cover hidden" data-account-view-cover=""></div>
+
 <div class="model_view__container">
     
     <div class="model_view__field_container box-shadow-none">
@@ -13,9 +15,39 @@
     
     <div class="model_view__field_container">
         <div class="model_view__field_container__key">Premium User</div>
-        <!-- TODO: Add is_premium to user model -->
-        <!-- <div class="model_view__field_container__val">{{user.is_premium}}</div> -->
+        <a 
+            href="{% url 'custom_auth:premium_view' %}" 
+            class="model_view__field_container__val model_view__field_container__val__a"
+            style="display: flex; justify-content: center;"    
+        >
+            {% if user.is_premium == True %}
+                <i class="fas fa-crown fa-crown-custom"></i>
+            {% else %}
+                Upgrade
+            {% endif %}
+        </a>
     </div>
+    
+    {% if user.is_premium == True %}
+    <div class="model_view__field_container">
+        <div class="model_view__field_container__key">Payment Info</div>
+        {% if user.session_id != null %}
+        <!-- TODO: Make this button fill the container -->
+            <form 
+                action="{% url 'custom_auth:customer_portal' %}" 
+                method="POST" class="model_view__field_container__val model_view__field_container__val__form p-0"
+            >
+                {% csrf_token %}
+                <input type="hidden" id="session-id" name="session_id" value="{{user.session_id}}" />
+                <input id="checkout-and-portal-button" type="submit" value="Manage your billing information &gt;">
+            </form>
+        {% else %}
+            <div class="model_view__field_container__val">
+                Unable to retrieve payment information
+            </div>
+        {% endif %}
+    </div>
+    {% endif %}
 
     <div class="model_view__field_container">
         <div class="model_view__field_container__key">Username</div>

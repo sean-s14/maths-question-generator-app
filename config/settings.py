@@ -18,7 +18,6 @@ load_dotenv() # This is actually loading our .env file
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-PWA_SERVICE_WORKER_PATH = os.path.join(BASE_DIR, 'static/js', 'serviceworker.js')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
@@ -41,9 +40,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # Custom
     'generator.apps.GeneratorConfig',
     'custom_auth.apps.CustomAuthConfig',
-    'custom_pwa',
+    # 3rd Party
+    'custom_pwa',  # Technically this is custom but its copied
 ]
 
 MIDDLEWARE = [
@@ -122,9 +123,11 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = 'static/'
-
 STATICFILES_DIRS = [ os.path.join(BASE_DIR, "static") ]
+# MEDIA_URL = '/images/'
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'static/images')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
@@ -150,7 +153,7 @@ SENDGRID_API_KEY = os.environ["SENDGRID_API_KEY"]
 DEFAULT_FROM_EMAIL = os.environ['DJANGO_DEFAULT_FROM_EMAIL']
 CONTACT_EMAIL = os.environ['DJANGO_CONTACT_EMAIL']
 
-# PWA
+# === PWA ===
 PWA_APP_NAME = 'maths_question_generator'
 PWA_APP_DESCRIPTION = "Maths Question Generator PWA"
 PWA_APP_THEME_COLOR = '#333333'
@@ -180,3 +183,9 @@ PWA_APP_SPLASH_SCREEN = [
 ]
 PWA_APP_DIR = 'ltr'
 PWA_APP_LANG = 'en-US'
+PWA_APP_DEBUG_MODE = os.environ['PWA_APP_DEBUG_MODE']  # This does not work for some reason?
+
+# Stripe
+DEV_STRIPE_PK_KEY = os.environ['DEV_STRIPE_PK_KEY']  # Public Key (development)
+DEV_STRIPE_SK_KEY = os.environ['DEV_STRIPE_SK_KEY']  # Secret Key (development)
+DEV_STRIPE_WEBHOOK_SK = os.environ['DEV_STRIPE_WEBHOOK_SK']

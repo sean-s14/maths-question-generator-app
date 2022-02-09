@@ -1,6 +1,6 @@
 # from django.conf.urls import url
-# TODO: Import re_path and update urlpatterns
-from django.urls import re_path
+# TODO: Import re_path and update urlpatterns (request for changes already made by others)
+from django.urls import re_path, path
 
 from .views import manifest, service_worker, offline
 

@@ -55,5 +55,7 @@
             console.log('django-pwa: ServiceWorker registration failed: ', err);
             {% endif %}
         });
+    } else {
+        console.log('serviceWorker NOT in navigator...');
     }
 </script>

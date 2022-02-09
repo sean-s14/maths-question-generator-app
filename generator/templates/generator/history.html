@@ -13,7 +13,7 @@
         {% for h in history %}
             <tr>
                 <td>
-                    <a href="{% url 'generator:preset_detail' h.preset.id %}" data-preset-title="">
+                    <a href="{% url 'generator:preset_detail' h.preset.slug %}" data-preset-title="">
                         {{h.preset.title}}
                     </a>
                 </td>

@@ -1,3 +1,5 @@
+from telnetlib import STATUS
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
 from django.core.exceptions import ValidationError
 from django.core.validators import validate_email
@@ -17,8 +19,6 @@ from .send_email import send_email
 
 # Sendgrid
 from django.conf import settings
-from sendgrid import SendGridAPIClient
-from sendgrid.helpers.mail import Mail
 from django.template.loader import render_to_string
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils.encoding import force_bytes, force_str
@@ -244,3 +244,287 @@ def account_delete(request):
     messages.error(request, f'Could not delete account "{username}"')
     return redirect(request, 'custom_auth:account_view')
 
+
+
+# Stripe
+import stripe
+stripe.api_key = settings.DEV_STRIPE_SK_KEY
+
+
+@login_required(login_url='custom_auth:signup')
+def premium_view(request):
+    context = {}
+
+    try:
+        # Get customer with user email if one exists
+        customer = stripe.Customer.list(email=request.user.email).data[0].id
+        print(customer)
+
+        # Check if user has subscription
+        subscription = stripe.Subscription.list(customer=customer).data[0]
+        print(subscription.id)
+        print(subscription)
+
+        # Check if subscription will be renewed
+        will_renew = subscription.get('cancel_at_period_end')
+        if will_renew is not None:
+            print('Will Renew:', will_renew)
+            context = {'will_renew': will_renew}
+
+    except Exception as e:
+        print(e)
+
+
+    # Get Prices and display them to user
+    prices = stripe.Price.list(lookup_keys=['monthly_sub', 'yearly_sub'])
+    
+    prices = [
+        {
+            "id": price.id,
+            "lookup_key": price.lookup_key,
+            "amount": int(price.unit_amount)/100,
+            "interval": price.recurring.interval,
+        } for price in prices.data
+    ]
+
+    context = {**context, 'active': 'premium', 'prices': prices}
+    return render(request, 'custom_auth/premium.html', context)
+
+
+YOUR_DOMAIN = 'http://127.0.0.1:8000/'
+
+def payment_cancel(request):
+    return redirect('custom_auth:premium_view')
+    # return render(request, 'custom_auth/cancel.html', {})
+
+def payment_success(request):
+    session_id = request.GET.get('session_id', None)
+
+    try:
+        user = UserModel.objects.get(session_id=session_id)
+        messages.success(request, 'Congratulations, you are a Premium User!')
+    except Exception as e:
+        print(e)
+        messages.error(request, 'Subscription failed!')
+
+    # return render(request, 'custom_auth/success.html', {'session_id': session_id})
+    return redirect('generator:home')
+
+from datetime import datetime
+def cancel_subscription(request):
+
+    user_email = request.user.email
+
+    # Retrieve latest Subscription object from Stripe with user's email
+    customer = stripe.Customer.list(email=user_email).data[0].id
+    subscription = stripe.Subscription.list(customer=customer).data[0]
+
+    # Cancel subscription at period end
+    subscription_cancellation = stripe.Subscription.modify(
+        subscription.id,
+        cancel_at_period_end=True
+    )
+
+    messages.success(request, 'Your subscription has been cancelled. An email has been sent to your account with more details.')
+    return redirect('generator:home')
+
+
+@login_required(login_url='custom_auth:signup')
+@user_passes_test(lambda user: user.is_premium == False, login_url='custom_auth:account_view')
+def create_checkout_session(request):
+    if request.method == 'POST':
+        try:
+            # Get Price chosen from the form
+            price_input = request.POST.get('premium_plan')
+            price = stripe.Price.retrieve(price_input)
+            # print(price)
+
+            # Get customer with current user's email if one exists 
+            email = request.user.email
+            customer = None
+            try:
+                customer = stripe.Customer.list(email=email).data[0]  # This is the newest by default 
+            except Exception as e:
+                print('Error:', e)
+
+            print('\nCustomer:', customer, '\n')
+
+            # Parameters for Stripe Session object
+            success_url = YOUR_DOMAIN + 'auth/payment-success/?session_id={CHECKOUT_SESSION_ID}'
+            cancel_url = YOUR_DOMAIN + 'auth/premium/'
+            mode = 'subscription'
+            line_items = [
+                    {
+                        'price': price.id,
+                        'quantity': 1,
+                    },
+                ]
+
+            # If there is NO customer in the stripe database, use customer_email to populate email field.
+            # If there IS a customer in the stripe database, populate use customer to populate all fields. 
+            if customer is None:
+                checkout_session = stripe.checkout.Session.create(
+                    success_url=success_url,
+                    cancel_url=cancel_url,
+                    mode=mode,
+                    line_items=line_items,
+                    customer_email=email,
+                )
+            else:
+                checkout_session = stripe.checkout.Session.create(
+                    success_url=success_url,
+                    cancel_url=cancel_url,
+                    mode=mode,
+                    line_items=line_items,
+                    customer=customer,
+                )
+
+            # Save session_id after creating session. Session_id can be used to modify billing information.
+            try:
+                user = UserModel.objects.get(email=request.user.email)
+                user.session_id = checkout_session.id
+                user.save()
+            except Exception as e:
+                print(e)
+
+            return redirect(checkout_session.url)
+        except Exception as e:
+            print(e)
+            return HttpResponse("Server error (updated)")
+
+
+def customer_portal(request):
+    # For demonstration purposes, we're using the Checkout session to retrieve the customer ID.
+    # Typically this is stored alongside the authenticated user in your database.
+    if request.method == 'POST':
+        checkout_session_id = request.POST.get('session_id')
+
+        print('Checkout Session ID:', checkout_session_id)
+        checkout_session = stripe.checkout.Session.retrieve(checkout_session_id)
+
+        # This is the URL to which the customer will be redirected after they are
+        # done managing their billing with the portal.
+        return_url = YOUR_DOMAIN
+
+        portalSession = stripe.billing_portal.Session.create(
+            customer=checkout_session.customer,
+            return_url=return_url,
+        )
+
+        print('\nPortal Session Return URL:', portalSession.return_url)
+        print('\nPortal Session URL:', portalSession.url, '\n')
+
+        return redirect(portalSession.url)
+
+
+import json
+from django.views.decorators.csrf import csrf_exempt
+@csrf_exempt
+def webhook_received(request):
+
+    if request.method == 'POST':
+        py_request_data = json.loads(request.body).get('data', None)
+
+        webhook_secret = settings.DEV_STRIPE_WEBHOOK_SK
+        if webhook_secret:
+            # Retrieve the event by verifying the signature using the raw body and secret if webhook signing is configured.
+            signature = request.headers.get('stripe-signature')
+
+            # Create event
+            try:
+                event = stripe.Webhook.construct_event(
+                    payload=request.body, 
+                    sig_header=signature, 
+                    secret=webhook_secret
+                )
+                data = event['data']
+            except stripe.error.SignatureVerificationError as e:
+                print(e)
+                return HttpResponse('Error')
+            except Exception as e:
+                print(e)
+                return HttpResponse('Error')
+            
+            # Get the type of webhook event sent - used to check the status of PaymentIntents.
+            event_type = event['type']
+        else:
+            data = py_request_data['data']
+            event_type = py_request_data['type']
+
+        data_object = data['object']
+
+        print('event ' + event_type ,'\n')
+
+        if event_type == 'checkout.session.completed':
+            print('🔔 Payment succeeded!')
+
+        elif event_type == 'customer.subscription.created':
+            print('Subscription created -', event.id)
+
+        elif event_type == 'customer.subscription.updated':
+            print('Subscription updated -', event.id)
+
+            # Send email when user cancels subscription
+            if data_object['cancel_at_period_end'] == True:
+                print('Subscription canceled -', event.id)
+                customer_id = data_object.get('customer', None)
+                if customer_id is not None:
+                    customer = stripe.Customer.retrieve(customer_id)
+                    try:
+                        user = UserModel.objects.get(email=customer.email)
+
+                        # Notify user of subscription cancellation by email
+                        current_period_end = data_object.get('current_period_end')
+                        current_period_end = datetime.fromtimestamp(current_period_end)
+
+                        html_content = render_to_string('custom_auth/email/subscription_cancellation.html', {
+                            'username': user.username,
+                            'date': current_period_end
+                        })
+                            
+                        subject = 'Subscription Cancellation'
+                        send_email(request, user.email, subject, html_content)
+                    
+                    except Exception as e:
+                        print(e)
+                else:
+                    print('Could not get customer\'s ID ')
+
+
+        elif event_type == 'customer.subscription.deleted':
+            print('Subscription deleted -', event.id)
+            # Get user email from data_object and change user's is_premium field to False
+            customer_email = data_object.get('customer_email', None)
+            if customer_email is not None:
+                try:
+                    user = UserModel.objects.get(email=customer_email)
+                    user.is_premium = False
+                    user.save()
+                    # TODO: Send email
+
+                except UserModel.DoesNotExist as e:
+                    print(e)
+            else:
+                print('Could not get customer\'s email\n')
+
+        elif event_type == 'invoice.payment_succeeded':
+            # Get user email from data_object and change user's is_premium field to True
+            customer_email = data_object.get('customer_email', None)
+            if customer_email is not None:
+                try:
+                    user = UserModel.objects.get(email=customer_email)
+                    user.is_premium = True
+                    user.save()
+                    # TODO: Send email
+
+                except UserModel.DoesNotExist as e:
+                    print(e)
+            else:
+                print('Could not get customer\'s email\n')
+        
+        elif event_type == 'invoice.payment_failed':
+            print('Payment failed!')
+
+        
+
+        return JsonResponse({'status': 'success'})

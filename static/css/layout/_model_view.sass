@@ -50,7 +50,7 @@
             display: flex
             align-items: center
             justify-content: center
-            padding: 0 0.5rem
+            padding: 0 .5rem
             height: 100%
             width: 35%
             font-weight: 700
@@ -64,9 +64,35 @@
             align-items: center
             justify-content: flex-start
             height: 100%
-            width: 65%
+            width: 65% !important
             padding: 0 .5rem
             background-color: #444
+            border: none
             border-radius: 0 .4rem .4rem 0
+            text-decoration: none
             overflow: auto
             @include s.scrollbar($width: 0, $height: .25rem)
+
+            &__a // Link to premium page
+                box-shadow: v.$bs1-sm
+                transition: background-color .4s
+
+                &:hover
+                    background-color: v.$primary
+
+            &__form // Managing billing information
+                box-shadow: v.$bs1-sm
+                transition: background-color .4s
+                
+                &:hover
+                    background-color: v.$primary
+
+                > input[id="checkout-and-portal-button"]
+                    width: 100%
+                    height: 100%
+                    padding: .2rem
+                    border: none
+                    font-size: .9rem
+                    background-color: transparent
+                    color: v.$light
+                    cursor: pointer

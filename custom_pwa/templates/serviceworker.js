@@ -1,4 +1,5 @@
 // Base Service Worker implementation.  To use your own Service Worker, set the PWA_SERVICE_WORKER_PATH variable in settings.py
+console.log('Templates (old) - serviceworker.js');
 
 var staticCacheName = "django-pwa-v" + new Date().getTime();
 var filesToCache = [
@@ -32,6 +33,7 @@ self.addEventListener("install", event => {
             .then(cache => {
                 return cache.addAll(filesToCache);
             })
+            .catch(err => {console.log(err)})
     )
 });
 
@@ -51,13 +53,43 @@ self.addEventListener('activate', event => {
 
 // Serve from Cache
 self.addEventListener("fetch", event => {
+    console.log('Serving from Cache #1...');
     event.respondWith(
         caches.match(event.request)
             .then(response => {
+                console.log('Serving from Cache #2...');
+                console.log(caches);
+                console.log(response);
+                console.log(event.request);
                 return response || fetch(event.request);
             })
-            .catch(() => {
+            .catch( err => {
+                console.log('Serving from Cache #3 (offline)...');
+                console.log(err);
                 return caches.match('/offline/');
             })
     )
 });
+
+
+// NEW
+// self.addEventListener('fetch', event => {
+//     let requestUrl = new URL(event.request.url);
+//       if (requestUrl.origin === location.origin) {
+//         if ((requestUrl.pathname === '/')) {
+//           event.respondWith(caches.match(''));
+//           console.log(caches);
+//           console.log(event);
+//           console.log('Returning');
+//           return;
+//         }
+//       }
+//       event.respondWith(
+//         caches.match(event.request)
+//           .then(function(response) {
+//             console.log(response);
+//             console.log(event.request);
+//             return response || fetch(event.request);
+//           })
+//       );
+//   });

@@ -18,9 +18,10 @@
         {% if user.is_anonymous %}
             <a 
                 href="{% url 'generator:test_create' %}"
-                class="home__btns__btn btn btn--outline"    
+                class="home__btns__btn btn btn--outline"  
+                style="display: flex; justify-content: space-around;"  
             >
-                Create Test
+                Create Test <i class="fas fa-plus"></i>
             </a>
             <a 
                 href="{% url 'custom_auth:signup' %}"
@@ -31,15 +32,17 @@
         {% else %}
             <a 
                 href="{% url 'generator:preset_create' %}"
-                class="home__btns__btn btn btn--outline"    
+                class="home__btns__btn btn btn--outline"
+                style="display: flex; justify-content: space-around;"
             >
-                Create Preset
+                Create Preset <i class="fas fa-plus"></i>
             </a>
             <a 
                 href="{% url 'generator:preset_list' %}"
                 class="home__btns__btn btn btn--outline"    
+                style="display: flex; justify-content: space-around;"
             >
-                View Presets
+                View Presets <i class="fas fa-caret-right"></i>
             </a>
         {% endif %}
     </div>
