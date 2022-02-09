@@ -463,6 +463,7 @@ def webhook_received(request):
 
         elif event_type == 'customer.subscription.updated':
             print('Subscription updated -', event.id)
+            print('Event Object: ', data_object)
 
             # Send email when user cancels subscription
             if data_object['cancel_at_period_end'] == True:
@@ -494,7 +495,12 @@ def webhook_received(request):
         elif event_type == 'customer.subscription.deleted':
             print('Subscription deleted -', event.id)
             # Get user email from data_object and change user's is_premium field to False
-            customer_email = data_object.get('customer_email', None)
+            # customer_email = data_object.get('customer_email', None)
+            customer_id = data_object.get('customer')
+            customer = stripe.Customer.retrieve(customer_id)
+            customer_email = customer.get('email')
+            print('Event Object:', data_object)
+            print(customer_email)
             if customer_email is not None:
                 try:
                     user = UserModel.objects.get(email=customer_email)
