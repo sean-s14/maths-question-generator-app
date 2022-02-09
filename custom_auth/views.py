@@ -248,7 +248,7 @@ def account_delete(request):
 
 # Stripe
 import stripe
-stripe.api_key = settings.DEV_STRIPE_SK_KEY
+stripe.api_key = settings.STRIPE_SK_KEY
 
 
 @login_required(login_url='custom_auth:signup')
@@ -425,7 +425,7 @@ def webhook_received(request):
     if request.method == 'POST':
         py_request_data = json.loads(request.body).get('data', None)
 
-        webhook_secret = settings.DEV_STRIPE_WEBHOOK_SK
+        webhook_secret = settings.STRIPE_WEBHOOK_SK
         if webhook_secret:
             # Retrieve the event by verifying the signature using the raw body and secret if webhook signing is configured.
             signature = request.headers.get('stripe-signature')

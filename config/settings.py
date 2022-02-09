@@ -194,6 +194,6 @@ PWA_APP_LANG = 'en-US'
 PWA_APP_DEBUG_MODE = os.environ['PWA_APP_DEBUG_MODE']  # This does not work for some reason?
 
 # Stripe
-DEV_STRIPE_PK_KEY = os.environ['DEV_STRIPE_PK_KEY']  # Public Key (development)
-DEV_STRIPE_SK_KEY = os.environ['DEV_STRIPE_SK_KEY']  # Secret Key (development)
-DEV_STRIPE_WEBHOOK_SK = os.environ['DEV_STRIPE_WEBHOOK_SK']
+STRIPE_PK_KEY = os.environ['STRIPE_PK_KEY']  # Public Key (development)
+STRIPE_SK_KEY = os.environ['STRIPE_SK_KEY']  # Secret Key (development)
+STRIPE_WEBHOOK_SK = os.environ['STRIPE_WEBHOOK_SK']
