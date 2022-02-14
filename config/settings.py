@@ -28,7 +28,7 @@ SECRET_KEY = os.environ['DJANGO_SECRET_KEY']
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ['DJANGO_DEBUG']
 
-ALLOWED_HOSTS = ['.herokuapp.com', 'localhost', '127.0.0.1', '192.168.1.153']
+ALLOWED_HOSTS = ['maths-quizzer.herokuapp.com', 'localhost', '127.0.0.1', '192.168.1.153']
 
 
 # Application definition
@@ -154,6 +154,7 @@ LOGIN_URL = '/auth/login/'
 LOGIN_REDIRECT_URL = '/auth/login/'
 LOGOUT_REDIRECT_URL = ''
 
+
 EMAIL_BACKEND = "sgbackend.SendGridBackend"
 SENDGRID_SANDBOX_MODE_IN_DEBUG = os.environ['SENDGRID_SANDBOX_MODE_IN_DEBUG']
 SENDGRID_ECHO_TO_STDOUT = os.environ['SENDGRID_ECHO_TO_STDOUT']
@@ -191,7 +192,7 @@ PWA_APP_SPLASH_SCREEN = [
 ]
 PWA_APP_DIR = 'ltr'
 PWA_APP_LANG = 'en-US'
-PWA_APP_DEBUG_MODE = os.environ['PWA_APP_DEBUG_MODE']  # This does not work for some reason?
+PWA_APP_DEBUG_MODE = os.environ['PWA_APP_DEBUG_MODE']
 
 # Stripe
 STRIPE_PK_KEY = os.environ['STRIPE_PK_KEY']  # Public Key (development)

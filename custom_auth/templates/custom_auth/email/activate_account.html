@@ -4,7 +4,7 @@
     <br>
     Please click on the link below to confirm your registration.
 </p>
-<a href="http://{{ domain }}{% url 'custom_auth:activate' uidb64=uid token=token %}">
+<a href="https://{{ domain }}{% url 'custom_auth:activate' uidb64=uid token=token %}">
     Confirm
 </a>
 {% endautoescape %}

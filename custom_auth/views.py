@@ -1,4 +1,3 @@
-from telnetlib import STATUS
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
 from django.core.exceptions import ValidationError
@@ -255,6 +254,8 @@ stripe.api_key = settings.STRIPE_SK_KEY
 def premium_view(request):
     context = {}
 
+    print('Is User Premium?', request.user.is_premium)
+
     try:
         # Get customer with user email if one exists
         customer = stripe.Customer.list(email=request.user.email).data[0].id
@@ -291,7 +292,7 @@ def premium_view(request):
     return render(request, 'custom_auth/premium.html', context)
 
 
-YOUR_DOMAIN = 'http://127.0.0.1:8000/'
+YOUR_DOMAIN = 'https://maths-quizzer.herokuapp.com/'
 
 def payment_cancel(request):
     return redirect('custom_auth:premium_view')
@@ -514,13 +515,19 @@ def webhook_received(request):
                 print('Could not get customer\'s email\n')
 
         elif event_type == 'invoice.payment_succeeded':
+            print('Invoice Payment Succeeded -', event.id)
             # Get user email from data_object and change user's is_premium field to True
             customer_email = data_object.get('customer_email', None)
+            print('Event Object:', data_object)
+            print('Customer Email:', customer_email)
             if customer_email is not None:
                 try:
                     user = UserModel.objects.get(email=customer_email)
                     user.is_premium = True
+                    print(user.is_premium)
                     user.save()
+                    user = UserModel.objects.get(email=customer_email)
+                    print(user.is_premium)
                     # TODO: Send email
 
                 except UserModel.DoesNotExist as e:
