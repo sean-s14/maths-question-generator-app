@@ -26,12 +26,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ['DJANGO_SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ['DJANGO_DEBUG']
-
-ALLOWED_HOSTS = ['maths-quizzer.herokuapp.com', 'localhost', '127.0.0.1', '192.168.1.153']
+DEBUG = False if os.environ['DJANGO_DEBUG'] == 'False' else True
 
 
-# Application definition
+ENV_DOMAIN = os.environ['ENV_DOMAIN']
+ALLOWED_HOSTS = ['localhost', '192.168.1.153', ENV_DOMAIN]
 
 INSTALLED_APPS = [
     'django.contrib.admin',

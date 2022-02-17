@@ -292,7 +292,8 @@ def premium_view(request):
     return render(request, 'custom_auth/premium.html', context)
 
 
-YOUR_DOMAIN = 'https://maths-quizzer.herokuapp.com/'
+# YOUR_DOMAIN = 'https://maths-quizzer.herokuapp.com/'
+YOUR_DOMAIN = settings.ENV_DOMAIN
 
 def payment_cancel(request):
     return redirect('custom_auth:premium_view')
