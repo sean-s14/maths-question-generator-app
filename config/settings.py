@@ -28,7 +28,7 @@ SECRET_KEY = os.environ['DJANGO_SECRET_KEY']
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False if os.environ['DJANGO_DEBUG'] == 'False' else True
 
-
+ADMIN_PATH = os.environ['ADMIN_PATH']
 ENV_DOMAIN = os.environ['ENV_DOMAIN']
 ALLOWED_HOSTS = ['localhost', '192.168.1.153', ENV_DOMAIN]
 
