@@ -2,100 +2,102 @@
 {% load static %}
 {% block content %}
 
-<div class="preset_detail__container">
-    <div class="preset_detail__field_container">
-        <a href="{% url 'generator:preset_edit' preset.slug %}" class="btn btn--outline">Edit</a>
-        <a href="{% url 'generator:test' preset.slug %}" class="btn btn--outline">Start Test</a>
+<div class="mv__container">
+    <div class="mv__field_container">
+        <a href="{% url 'generator:preset_edit' preset.slug %}" class="btn--custom btn--custom--dark">Edit</a>
+        <a href="{% url 'generator:test' preset.slug %}" class="btn--custom btn--custom--dark">Start Test</a>
     </div>
-    <div class="preset_detail__field_container">
-        <div class="preset_detail__field_container__key">Title</div>
-        <div class="preset_detail__field_container__val">{{preset.title}}</div>
+    <div class="mv__field_container shadow">
+        <div class="mv__field_container__key bg-color--darker color--light">Title</div>
+        <div class="mv__field_container__val bg-color--less-dark color--light">{{preset.title}}</div>
     </div>
-    <div class="preset_detail__field_container">
-        <div class="preset_detail__field_container__key">Questions</div>
-        <div class="preset_detail__field_container__val">{{preset.question_count}}</div>
+    <div class="mv__field_container shadow">
+        <div class="mv__field_container__key bg-color--darker color--light">Questions</div>
+        <div class="mv__field_container__val bg-color--less-dark color--light">{{preset.question_count}}</div>
     </div>
-    <div class="preset_detail__field_container">
-        <div class="preset_detail__field_container__key">Topics</div>
+    <div class="mv__field_container shadow">
+        <div class="mv__field_container__key bg-color--darker color--light">Topics</div>
         <div 
-            class="preset_detail__field_container__val" 
+            class="mv__field_container__val bg-color--less-dark color--light" 
             style="cursor: pointer;" 
             data-preset-detail-topics=""
         >
             View Topics &gt;
         </div>
-        <div id="detail_topics_popup" class="hidden">
+        <div id="detail_topics_popup" class="hidden bg-color--dark">
             <ul>
                 {% for topic in preset.topics.all %}
-                <li>
-                    <h4>{{topic.title}}</h4>
+                <li class="color--light">
+                    <h4 class="color--light">{{topic.title}}</h4>
                     <ul>
                         {% for subtopic in preset.sub_topics.all %}
                             {% if subtopic in topic.subtopic_set.all %}
-                                <li>{{subtopic.title}}</li>
+                                <li class="color--light">{{subtopic.title}}</li>
                             {% endif %}
                         {% endfor %}
                     </ul>
                 </li>
-                <hr>
+                <hr class="color--light">
                 {% endfor %}
             </ul>
         </div>
     </div>
 
     <!-- TODO: Add this once difficulty is sorted out -->
-    <!-- <div class="preset_detail__field_container">
-        <div class="preset_detail__field_container__key">Difficulty</div>
-        <div class="preset_detail__field_container__val">{{preset.difficulty}}</div>
+    <!-- <div class="mv__field_container">
+        <div class="mv__field_container__key">Difficulty</div>
+        <div class="mv__field_container__val">{{preset.difficulty}}</div>
     </div> -->
 
-    <!-- <div class="preset_detail__field_container">
-        <div class="preset_detail__field_container__key">Timer</div>
-        <div class="preset_detail__field_container__val">{{preset.timer}}</div>
+    <!-- <div class="mv__field_container">
+        <div class="mv__field_container__key">Timer</div>
+        <div class="mv__field_container__val">{{preset.timer}}</div>
     </div> -->
 
     <!-- TODO: Change timer type to display stopwatch or countdown -->
-    <!-- <div class="preset_detail__field_container">
-        <div class="preset_detail__field_container__key">Timer Type</div>
-        <div class="preset_detail__field_container__val">{{preset.timer_type}}</div>
+    <!-- <div class="mv__field_container">
+        <div class="mv__field_container__key">Timer Type</div>
+        <div class="mv__field_container__val">{{preset.timer_type}}</div>
     </div> -->
     
     <!-- TODO: Convert timer length to hours/minutes/seconds -->
-    <!-- <div class="preset_detail__field_container">
-        <div class="preset_detail__field_container__key">Timer Length</div>
-        <div class="preset_detail__field_container__val">{{preset.timer_length}}</div>
+    <!-- <div class="mv__field_container">
+        <div class="mv__field_container__key">Timer Length</div>
+        <div class="mv__field_container__val">{{preset.timer_length}}</div>
     </div> -->
 
-    <div class="preset_detail__field_container">
-        <div class="preset_detail__field_container__key">Best Record</div>
-        <div class="preset_detail__field_container__val">{{preset.best_record}}</div>
+    <div class="mv__field_container shadow">
+        <div class="mv__field_container__key bg-color--darker color--light">Best Record</div>
+        <div class="mv__field_container__val bg-color--less-dark color--light">{{preset.best_record}}</div>
     </div>
     
-    <div class="preset_detail__field_container">
-        <div class="preset_detail__field_container__key">Date Created</div>
-        <div class="preset_detail__field_container__val">{{preset.date_created}}</div>
+    <div class="mv__field_container shadow">
+        <div class="mv__field_container__key bg-color--darker color--light">Date Created</div>
+        <div class="mv__field_container__val bg-color--less-dark color--light">{{preset.date_created}}</div>
     </div>
     
-    <div class="preset_detail__field_container">
-        <div class="preset_detail__field_container__key">Date Modified</div>
-        <div class="preset_detail__field_container__val">{{preset.date_modified}}</div>
+    <div class="mv__field_container shadow">
+        <div class="mv__field_container__key bg-color--darker color--light">Date Modified</div>
+        <div class="mv__field_container__val bg-color--less-dark color--light">{{preset.date_modified}}</div>
     </div>
 
     <!-- Preset Deletion -->
-    <div class="preset_detail__field_container">
-        <div class="btn btn--outline" data-delete-preset-popup-trigger="">Delete Preset</div>
+    <div class="mv__field_container">
+        <div class="btn--custom btn--custom--dark w-100" data-delete-preset-popup-trigger="">Delete Preset</div>
     </div>
     
     <div class="cover hidden" data-preset-view-cover=""></div>
     <form 
         action="{% url 'generator:preset_delete' preset.slug %}" method='POST'
-        id="form_delete_popup" class="hidden"
+        id="form_delete_popup" class="hidden bg-color--dark"
     >
         {% csrf_token %}
-        <div style="margin-bottom: 2rem; text-align: center; font-size: 1.2rem;">
+        <div 
+            class="color--light mb-4"
+            style="text-align: center; font-size: 1.2rem;">
             Are you sure you want to delete this preset?
         </div>
-        <input type="submit" value="Yes" class="btn btn--outlin btn--danger">
+        <input type="submit" value="Yes" class="btn--custom btn--custom--dark">
     </form>
 
 </div>

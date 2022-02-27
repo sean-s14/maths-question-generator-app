@@ -3,7 +3,7 @@
 
 {% block content %}
 <div class="home">
-    <h3 class="home__title">Maths Generator</h3>
+    <h3 class="mb-3 color--light">Maths Generator</h3>
     
     <div class="home__image">
         <img src="{% static 'images/site-logo-1500x1500.png' %}" alt="" width="250">
@@ -14,35 +14,37 @@
         Industry icons created by Freepik - Flaticon
     </a> -->
     
-    <div class="home__btns">
+    <div>
         {% if user.is_anonymous %}
             <a 
                 href="{% url 'generator:test_create' %}"
-                class="home__btns__btn btn btn--outline"  
-                style="display: flex; justify-content: space-around;"  
+                class="mb-4 btn--custom btn--custom--dark justify-content-around"
             >
-                Create Test <i class="fas fa-plus"></i>
+                <span>Create Test</span>
+                <i class="fas fa-plus ms-2"></i>
             </a>
-            <a 
+
+            <a
                 href="{% url 'custom_auth:signup' %}"
-                class="home__btns__btn btn btn--outline"    
+                class="btn--custom btn--custom--dark btn--custom--dark--concave justify-content-around"    
             >
-                Signup
+                <span>Signup</span>
             </a>
         {% else %}
             <a 
                 href="{% url 'generator:preset_create' %}"
-                class="home__btns__btn btn btn--outline"
-                style="display: flex; justify-content: space-around;"
+                class="mb-4 btn--custom btn--custom--dark justify-content-around px-3 link"
             >
-                Create Preset <i class="fas fa-plus"></i>
+                <span>Create Preset</span>
+                <i class="fas fa-plus ms-2"></i>
             </a>
+
             <a 
                 href="{% url 'generator:preset_list' %}"
-                class="home__btns__btn btn btn--outline"    
-                style="display: flex; justify-content: space-around;"
+                class="btn--custom btn--custom--dark btn--custom--dark--concave justify-content-around px-3 link"
             >
-                View Presets <i class="fas fa-caret-right"></i>
+                <span>View Presets</span>
+                <i class="fas fa-caret-right"></i>
             </a>
         {% endif %}
     </div>

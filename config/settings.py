@@ -30,7 +30,9 @@ DEBUG = False if os.environ['DJANGO_DEBUG'] == 'False' else True
 
 ADMIN_PATH = os.environ['ADMIN_PATH']
 ENV_DOMAIN = os.environ['ENV_DOMAIN']
-ALLOWED_HOSTS = ['localhost', '192.168.1.153', ENV_DOMAIN]
+MY_IP_ADDRESS = os.environ['MY_IP_ADDRESS']
+
+ALLOWED_HOSTS = ['localhost', MY_IP_ADDRESS, ENV_DOMAIN]
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -49,9 +51,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    # 3rd party
-    'whitenoise.middleware.WhiteNoiseMiddleware',
-
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # 3rd party
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -129,10 +129,11 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = 'static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = [ os.path.join(BASE_DIR, "static") ]
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
 # MEDIA_URL = '/images/'
 # MEDIA_ROOT = os.path.join(BASE_DIR, 'static/images')
 
@@ -162,8 +163,8 @@ DEFAULT_FROM_EMAIL = os.environ['DJANGO_DEFAULT_FROM_EMAIL']
 CONTACT_EMAIL = os.environ['DJANGO_CONTACT_EMAIL']
 
 # === PWA ===
-PWA_APP_NAME = 'maths_question_generator'
-PWA_APP_DESCRIPTION = "Maths Question Generator PWA"
+PWA_APP_NAME = 'Maths Quizzer'
+PWA_APP_DESCRIPTION = "PWA app to challenge yourself with maths tests."
 PWA_APP_THEME_COLOR = '#333333'
 PWA_APP_BACKGROUND_COLOR = '#EEEEEE'
 PWA_APP_DISPLAY = 'standalone'

@@ -2,12 +2,12 @@
 {% load static %}
 
 {% block content %}
-<form action="{% url 'custom_auth:login' %}" method="POST" class="auth__form">
+<form action="{% url 'custom_auth:login' %}" method="POST" class="auth__form rendered-form rendered-form--dark">
     {% csrf_token %}
     {{form.username}}
     {{form.password}}
-    <input type="submit" value='Login' class="btn btn--outline input">
-    <hr class="hr">
-    <a href="{% url 'custom_auth:signup' %}" class="btn btn--outline">Register</a>
+    <input type="submit" value='Login' class="btn--custom btn--custom--dark mb-2">
+    <hr class="hr color--light bg-color--light">
+    <a href="{% url 'custom_auth:signup' %}" class="btn--custom btn--custom--dark" style="width: 80%;">Register</a>
 </form>
 {% endblock content %}

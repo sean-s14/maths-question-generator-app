@@ -1,4 +1,5 @@
-@use '../base/_variables' as v
+@use '../base/_variables' as var
+@use '../utils/_utils' as utils
 
 
 .form__premium
@@ -27,7 +28,13 @@
             display: none
 
             &:checked + label
-                background-color: v.$primary
+                color: var.$primary !important
+
+            &:checked + label.btn--custom--dark
+                @include utils.btn-pressed ($theme: dark)
+            &:checked + label.btn--custom--light
+                @include utils.btn-pressed ($theme: light)
+
 
         > label
             text-align: center
@@ -40,9 +47,10 @@
             width: 100%
             height: 100%
 
-            transition: background-color .4s
-            box-shadow: v.$bs1-xs
+            transition: all .4s
             border-radius: .25rem
+
+            padding: .4rem 0
 
             > div
                 font-size: 2rem

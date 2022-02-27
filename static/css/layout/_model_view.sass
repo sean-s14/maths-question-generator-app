@@ -2,7 +2,7 @@
 @use '../components/_scrollbar' as s
 @use '../base/_variables' as v
 
-.model_view
+.mv  // Model View
     
     &__container
         width: 90vw
@@ -19,11 +19,9 @@
         margin-bottom: 2rem
         height: 3rem
         border-radius: .4rem
-        // box-shadow: v.$bs1-sm
 
         > a // Edit button
-            max-width: 100%
-            width: 100%
+            width: 45%
             margin-left: auto
             margin-right: auto
 
@@ -54,8 +52,6 @@
             height: 100%
             width: 35%
             font-weight: 700
-            background-color: #222
-            color: #64B5F6
             border-radius: .4rem 0 0 .4rem
 
 
@@ -66,33 +62,17 @@
             height: 100%
             width: 65% !important
             padding: 0 .5rem
-            background-color: #444
             border: none
             border-radius: 0 .4rem .4rem 0
             text-decoration: none
             overflow: auto
             @include s.scrollbar($width: 0, $height: .25rem)
 
-            &__a // Link to premium page
-                box-shadow: v.$bs1-sm
-                transition: background-color .4s
 
-                &:hover
-                    background-color: v.$primary
-
-            &__form // Managing billing information
-                box-shadow: v.$bs1-sm
-                transition: background-color .4s
-                
-                &:hover
-                    background-color: v.$primary
-
-                > input[id="checkout-and-portal-button"]
-                    width: 100%
-                    height: 100%
-                    padding: .2rem
-                    border: none
-                    font-size: .9rem
-                    background-color: transparent
-                    color: v.$light
-                    cursor: pointer
+input[id="checkout-and-portal-button"]
+    width: 100%
+    height: 100%
+    padding: .2rem
+    border: none
+    font-size: .9rem
+    cursor: pointer

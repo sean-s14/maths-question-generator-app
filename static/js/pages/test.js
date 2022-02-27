@@ -141,7 +141,7 @@ const next_question = () => {
         question_completion_popup.css('height', '30rem');
         question_completion_popup.css('width', '30rem');
         question_completion_popup.css('justifyContent', 'normal');
-        question_complete_msg.css('color', '#EEE');
+        // question_complete_msg.css('color', '#EEE');
         question_complete_msg.css('marginTop', '0.8rem');
         continue_button.css('display', 'none');
         

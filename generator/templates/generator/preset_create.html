@@ -18,22 +18,24 @@
 
     <!-- Title -->
     {% if form.title %}
-        <div class="preset__field">
-            <label for="id_title">{{ form.title.label }}:</label>
+        <div class="preset__field color--light">
+            <label for="id_title" class="rendered-input rendered-input--dark">{{ form.title.label }}:</label>
             {{ form.title }}
         </div>
     {% endif %}
 
     <!-- Topics & Sub-Topics -->
-    <div class="preset__field">
+    <div class="preset__field color--light">
         <label for="id_topics">{{ form.topics.label }}:</label>
         <div class="d-none">
             {{ form.topics }}
             {{ form.sub_topics }}
         </div>
         <div class="preset__field__topics">
-            <div class="btn btn--outline" data-topics-choice-btn="">Choose Topics</div>
-            <ul class="preset__field__topics__popup hidden">
+            <div class="btn--custom btn--custom--dark link color--primary" data-topics-choice-btn="">
+                Choose Topics
+            </div>
+            <ul class="preset__field__topics__popup hidden bg-color--dark">
                 {% for topic in topics %}
                     <li>
                         <div class="custom-checkbox">
@@ -41,7 +43,7 @@
                                 {% if topic in preset.topics.all %}checked{% endif %}
                             >
                             <label for="topics-{{topic.id}}">
-                                <div><i class="fas fa-check fa-xs"></i></div>
+                                <div class="bg-color--darker"><i class="fas fa-check fa-xs"></i></div>
                                 <span>{{topic.title}}</span>
                             </label>
                             <span 
@@ -58,7 +60,7 @@
                                         {% if subtopic in preset.sub_topics.all %}checked{% endif %}
                                     >
                                     <label for="subtopics-{{subtopic.id}}">
-                                        <div><i class="fas fa-check fa-xs"></i></div>
+                                        <div class="bg-color--darker"><i class="fas fa-check fa-xs"></i></div>
                                         <span data-parent-topic="{{subtopic.parent_topic}}">
                                             {{subtopic.title}}
                                         </span>
@@ -73,20 +75,22 @@
     </div>
 
     <!-- Question Count -->
-    <div class="preset__field">
-        <label for="id_question_count">{{ form.question_count.label }}:</label>
+    <div class="preset__field color--light">
+        <label for="id_question_count" class="rendered-input rendered-input--dark">
+            {{ form.question_count.label }}:
+        </label>
         {{ form.question_count }}
     </div>
 
     <!-- Difficulty -->
     <!-- TODO: Include difficulty in math-generator package -->
-    <div class="preset__field d-none">
+    <div class="preset__field color--light d-none">
         <label for="id_difficulty">{{ form.difficulty.label }}:</label>
         {{ form.difficulty }}
     </div>
 
     <!-- Timer -->
-    <div class="preset__field d-none">
+    <div class="preset__field color--light d-none">
         <label for="id_timer">{{ form.timer.label }}:</label>
         <div class="d-none">{{ form.timer }}</div>
         <label class="preset__field__timer" for="id_timer_checkbox">
@@ -99,7 +103,7 @@
 
     <!-- Timer Type -->
     <div 
-        class="preset__field"
+        class="preset__field color--light"
         style="flex-direction: column; align-items: normal"
         data-timer-type-field=""
     >
@@ -142,7 +146,7 @@
 
     <!-- Timer Length -->
     <div 
-        class="preset__field"
+        class="preset__field color--light"
         data-timer-length-field=""
         style="flex-direction: column;"    
     >
@@ -195,10 +199,13 @@
 
     <!-- Save Buttons -->
     {% if is_temp == True %}
-        <input type="submit" value="Begin Test" class="btn btn--outline">
+        <input type="submit" value="Begin Test" 
+            class="btn--custom btn--custom--dark link bg-color--dark">
     {% else %}
-        <input type="submit" value="Save & Begin Test" name="begin" class="btn btn--outline">
-        <input type="submit" value="Save" class="btn btn--outline">
+        <input type="submit" value="Save & Begin Test" name="begin" 
+            class="btn--custom btn--custom--dark link bg-color--dark">
+        <input type="submit" value="Save" 
+            class="btn--custom btn--custom--dark link bg-color--dark">
     {% endif %}
 </form>
 

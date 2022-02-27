@@ -1,9 +1,31 @@
-@use '../base/_variables' as v
+@use '../base/_variables' as var
+@use '../utils/_utils' as utils
+
+.rendered-form
+    > input
+        width: 80%
+        padding: 0.3rem
+        outline: none
+        border: none
+        border-radius: .25rem
+        margin-bottom: 1.5rem
+    
+    &--dark > input // Goes on label next to input
+        color: var.$light
+        @include utils.btn-concave ($theme: dark)
+        &:focus
+            @include utils.btn-pressed ($theme: dark)
+
+    &--light > input
+        color: var.$dark
+        @include utils.btn-concave ($theme: light)
+        &:focus
+            @include utils.btn-pressed ($theme: light)
+
 
 .auth__form
     // Positioning
     margin: 3rem auto auto auto
-    // border: 1px solid v.$light
 
     // Sizing
     width: clamp(12rem, 22rem, 85vw)
@@ -16,16 +38,6 @@
     align-items: center
     padding: 2rem 0
     
-    border-radius: .75rem
-    box-shadow: v.$bs1
-
-    &__focused
-        box-shadow: v.$bs2-sm !important
-        border: none !important
-
-    > input
-        margin: .8rem auto
-
-        &[type='submit']
-            margin-top: 2rem
+    border-radius: .5rem
+    box-shadow: var.$bs1
 

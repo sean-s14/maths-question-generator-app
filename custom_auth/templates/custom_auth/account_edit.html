@@ -2,10 +2,10 @@
 {% load static %}
 
 {% block content %}
-<form action="{% url 'custom_auth:account_edit' %}" method="POST" class="auth__form">
+<form action="{% url 'custom_auth:account_edit' %}" method="POST" class="auth__form rendered-form rendered-form--dark">
     {% csrf_token %}
     {{form.username}}
     {{form.email}}
-    <input type="submit" value='Save' class="btn btn--outline input">
+    <input type="submit" value='Save' class="btn--custom btn--custom--dark link w-50 mb-1">
 </form>
 {% endblock content %}

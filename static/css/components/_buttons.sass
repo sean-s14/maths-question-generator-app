@@ -1,43 +1,42 @@
-@use '../base/_variables' as v
-    
-.btn
-    display: grid
-    place-items: center
-    width: 10rem
-    max-width: 10rem
+@use '../base/_variables' as var
+@use '../utils/_utils' as utils
+
+
+.btn--custom
+    border-radius: .2rem
     height: 2.5rem
-    border-radius: .25rem
+    padding: 0 1rem
+    text-decoration: none  // For anchor tag's
+    display: flex
+    align-items: center
+    justify-content: center
+    cursor: pointer
     border: none
     outline: none
-    padding-left: .25rem
-    padding-right: .25rem
-    margin: 0
-    font-size: 1.1rem
-    font-weight: 700
-    text-decoration: none
-    cursor: pointer
     transition: all .3s
-    box-shadow: v.$bs1-xs
+    @include utils.btn-concave ($theme: dark)
 
-    &--outline
-        background-color: transparent
-        color: #EEEEEE
-        height: 2.5rem
+    &:hover
+        color: var.$primary
+
+    &:focus
+        @include utils.btn-pressed ($theme: dark)
+
+    &--dark
+        @include utils.btn-concave ($theme: dark)
+
+        &--flat
+            @include utils.btn-flat ($theme: dark)
+
+
+    &--light
+        @include utils.btn-concave ($theme: light)
 
         &:hover
-            background-color: v.$primary !important
-            box-shadow: 0 0 5px v.$primary, 0 0 15px v.$primary, 0 0 50px v.$primary !important
+            color: var.$primary
     
-    &--danger
-        background-color: transparent
-        color: #EEEEEE
-        height: 2.5rem
-        box-shadow: 0 0 5px v.$error, 0 0 15px v.$error, 0 0 50px v.$error !important
+        &:focus
+            @include utils.btn-pressed ($theme: light)
 
-        &:hover
-            background-color: v.$error !important
-                // box-shadow: 0 0 5px v.$primary, 0 0 15px v.$primary, 0 0 50px v.$primary !important
-            
-    &--fill
-        background-color: v.$primary
-        color: #EEEEEE
+        &--flat
+            @include utils.btn-flat ($theme: light)

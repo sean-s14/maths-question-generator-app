@@ -1,0 +1,26 @@
+#loading-screen 
+    color: #FFF
+    background-color: rgba(51, 51, 51, 1)
+    display: flex
+    align-items: center
+    justify-content: center
+    width: 100vw
+    height: 100vh
+    position: fixed
+    top: 0
+    left: 0
+    z-index: 100
+
+
+// Spinner comes from https://10015.io/tools/css-loader-generator
+.spinner
+   width: 88px
+   height: 88px
+   border-radius: 50%
+   background: radial-gradient(farthest-side,#474bff 94%,#0000) top/14px 14px no-repeat, conic-gradient(#0000 30%,#474bff)
+   -webkit-mask: radial-gradient(farthest-side,#0000 calc(100% - 14px),#000 0)
+   animation: spinner-c7wet2 1.2s infinite linear
+
+@keyframes spinner-c7wet2
+   100%
+      transform: rotate(1turn)

@@ -1,21 +1,21 @@
 
 <!-- Navigation Bar -->
-<div class="nav nav__bar">
+<div class="nav__bar bg-color--dark">
     <!-- TODO: add authentication stuff here -->
     <div></div>
     {% if user.is_authenticated %}
-        <p class="nav__bar__username">
-            <span>{{user.username}}</span>
+        <p class="nav__bar__username color--light">
+            <a href="{% url 'custom_auth:account_view' %}" class="link color--primary">{{user.username}}</a>
         </p>
     {% endif %}
 </div>
 
 <!-- Navigation Toggle -->
-<label class="nav__toggle" for="menu-toggle">
+<label class="nav__toggle bg-color--dark btn--custom--dark" for="menu-toggle">
     <span class="nav__toggle__lines">
-        <span class="nav__toggle__line"></span>
-        <span class="nav__toggle__line"></span>
-        <span class="nav__toggle__line"></span>
+        <span class="nav__toggle__line bg-color--light"></span>
+        <span class="nav__toggle__line bg-color--light"></span>
+        <span class="nav__toggle__line bg-color--light"></span>
     </span>
 </label>
 
@@ -24,102 +24,108 @@
 <!-- TODO: Clicking it closes the nav menu -->
 
 <!-- Navigation Side Menu -->
-<div class="nav__menu__side">
+<div class="nav__menu__side bg-color--darker">
+    <div id="change_theme" class="">
+        <svg class="color--light" style="width: 50px;"
+            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM256 64V448C362 448 448 362 448 256C448 149.1 362 64 256 64z"/></svg>
+        <span class="ms-3 color--light">Theme</span>
+    </div>
+
     <a 
         href="{% url 'generator:home' %}" 
-        class="nav__menu__side__route"
+        class=""
     >
         {% if active == 'home' %}
             <span class="active"></span>
         {% endif %}
-        <i class="fas fa-home fa-lg"></i>
-        <span class="route_title">Home</span>
+        <i class="fas fa-home fa-lg color--light"></i>
+        <span class="ms-3 color--light">Home</span>
     </a>
     <a 
         href="{% url 'generator:preset_create' %}" 
-        class="nav__menu__side__route"
+        class=""
     >
         {% if active == 'preset_create' %}
             <span class="active"></span>
         {% endif %}
-        <i class="fas fa-square fa-lg"></i>
-        <span class="route_title">Create Preset</span>
+        <i class="fas fa-square fa-lg color--light"></i>
+        <span class="ms-3 color--light">Create Preset</span>
     </a>
     <a 
         href="{% url 'generator:preset_list' %}" 
-        class="nav__menu__side__route"
+        class=""
     >
         {% if active == 'presets' %}
             <span class="active"></span>
         {% endif %}
-        <i class="fas fa-th-large fa-lg"></i>
-        <span class="route_title">Presets</span>
+        <i class="fas fa-th-large fa-lg color--light"></i>
+        <span class="ms-3 color--light">Presets</span>
     </a>
     <a 
         href="{% url 'generator:history' %}"
-        class="nav__menu__side__route"
+        class=""
     >
         {% if active == 'history' %}
             <span class="active"></span>
         {% endif %}
-        <i class="fas fa-history fa-lg"></i>
-        <span class="route_title">History</span>
+        <i class="fas fa-history fa-lg color--light"></i>
+        <span class="ms-3 color--light">History</span>
     </a>
     
-    <hr style="width: 90%; margin: 1rem 0;">
+    <hr class="my-2 color--light" style="width: 90%; height: .2rem;">
 
     <a 
         href="{% url 'custom_auth:premium_view' %}"
-        class="nav__menu__side__route"
+        class=""
     >
         {% if active == 'premium' %}
             <span class="active"></span>
         {% endif %}
-        <i class="fas fa-crown fa-lg"></i>
-        <span class="route_title">Premium</span>
+        <i class="fas fa-crown fa-lg color--light"></i>
+        <span class="ms-3 color--light">Premium</span>
     </a>
     
     {% if user.is_authenticated %}
         <a 
             href="{% url 'custom_auth:account_view' %}"
-            class="nav__menu__side__route"
+            class=""
         >
             {% if active == 'account' %}
                 <span class="active"></span>
             {% endif %}
-            <i class="fas fa-user fa-lg"></i>
-            <span class="route_title">Account</span>
+            <i class="fas fa-user fa-lg color--light"></i>
+            <span class="ms-3 color--light">Account</span>
         </a>
         <a 
             href="{% url 'custom_auth:logout' %}"
-            class="nav__menu__side__route"
+            class=""
         >
             {% if active == 'logout' %}
                 <span class="active"></span>
             {% endif %}
-            <i class="fas fa-sign-out-alt fa-lg"></i>
-            <span class="route_title">Logout</span>
+            <i class="fas fa-sign-out-alt fa-lg color--light"></i>
+            <span class="ms-3 color--light">Logout</span>
         </a>
     {% else %}
         <a 
             href="{% url 'custom_auth:login' %}"
-            class="nav__menu__side__route"
+            class=""
         >
             {% if active == 'login' %}
                 <span class="active"></span>
             {% endif %}
-            <i class="fas fa-sign-in-alt fa-lg"></i>
-            <span class="route_title">Login</span>
+            <i class="fas fa-sign-in-alt fa-lg color--light"></i>
+            <span class="ms-3 color--light">Login</span>
         </a>
         <a 
             href="{% url 'custom_auth:signup' %}"
-            class="nav__menu__side__route"
+            class=""
         >
             {% if active == 'signup' %}
                 <span class="active"></span>
             {% endif %}
-            <i class="fas fa-user-plus fa-lg"></i>
-            <span class="route_title">Signup</span>
+            <i class="fas fa-user-plus fa-lg color--light"></i>
+            <span class="ms-3 color--light">Signup</span>
         </a>
     {% endif %}
 </div>

@@ -5,20 +5,23 @@
 
 <div class="cover hidden" data-account-view-cover=""></div>
 
-<div class="model_view__container">
+<div class="mv__container">
     
-    <div class="model_view__field_container box-shadow-none">
-        <a href="{% url 'custom_auth:account_edit' %}" class="btn btn--outline">
+    <div class="mv__field_container box-shadow-none">
+        <a 
+            href="{% url 'custom_auth:account_edit' %}" 
+            class="btn--custom btn--custom--dark w-100 link"
+        >
             Edit Account Details
         </a>
     </div>
     
-    <div class="model_view__field_container">
-        <div class="model_view__field_container__key">Premium User</div>
+    <!-- Premium User (Boolean) -->
+    <div class="mv__field_container shadow">
+        <div class="mv__field_container__key bg-color--darker color--light">Premium User</div>
         <a 
             href="{% url 'custom_auth:premium_view' %}" 
-            class="model_view__field_container__val model_view__field_container__val__a"
-            style="display: flex; justify-content: center;"    
+            class="mv__field_container__val bg-color--less-dark d-flex justify-content-center btn--custom--dark"
         >
             {% if user.is_premium == True %}
                 <i class="fas fa-crown fa-crown-custom"></i>
@@ -28,52 +31,56 @@
         </a>
     </div>
     
+    <!-- Payment Info -->
     {% if user.is_premium == True %}
-    <div class="model_view__field_container">
-        <div class="model_view__field_container__key">Payment Info</div>
+    <div class="mv__field_container shadow">
+        <div class="mv__field_container__key bg-color--darker color--light">Payment Info</div>
         {% if user.session_id != null %}
         <!-- TODO: Make this button fill the container -->
             <form 
                 action="{% url 'custom_auth:customer_portal' %}" 
-                method="POST" class="model_view__field_container__val model_view__field_container__val__form p-0"
+                method="POST" class="mv__field_container__val mv__field_container__val__form p-0"
             >
                 {% csrf_token %}
                 <input type="hidden" id="session-id" name="session_id" value="{{user.session_id}}" />
-                <input id="checkout-and-portal-button" type="submit" value="Manage your billing information &gt;">
+                <input id="checkout-and-portal-button" type="submit" 
+                    value="Manage your billing information &gt;" 
+                    class="btn--custom--dark link color--light"
+                >
             </form>
         {% else %}
-            <div class="model_view__field_container__val">
+            <div class="mv__field_container__val">
                 Unable to retrieve payment information
             </div>
         {% endif %}
     </div>
     {% endif %}
 
-    <div class="model_view__field_container">
-        <div class="model_view__field_container__key">Username</div>
-        <div class="model_view__field_container__val">{{user.username}}</div>
+    <div class="mv__field_container shadow">
+        <div class="mv__field_container__key bg-color--darker color--light">Username</div>
+        <div class="mv__field_container__val bg-color--less-dark color--light">{{user.username}}</div>
     </div>
 
-    <div class="model_view__field_container">
-        <div class="model_view__field_container__key">Email</div>
-        <div class="model_view__field_container__val">{{user.email}}</div>
+    <div class="mv__field_container shadow">
+        <div class="mv__field_container__key bg-color--darker color--light">Email</div>
+        <div class="mv__field_container__val bg-color--less-dark color--light">{{user.email}}</div>
     </div>
 
-    <div class="model_view__field_container">
-        <div class="model_view__field_container__key">Date Created</div>
-        <div class="model_view__field_container__val">{{user.date_joined}}</div>
+    <div class="mv__field_container shadow">
+        <div class="mv__field_container__key bg-color--darker color--light">Date Joined</div>
+        <div class="mv__field_container__val bg-color--less-dark color--light">{{user.date_joined}}</div>
     </div>
 
-    <div class="model_view__field_container box-shadow-none" data-delete-account-popup-trigger="">
-        <div class="btn btn--outline btn--outline--danger">Delete Account</div>
+    <div class="mv__field_container" data-delete-account-popup-trigger="">
+        <div class="btn--custom btn--custom--dark w-100 link link--danger">Delete Account</div>
     </div>
     <form 
         action="{% url 'custom_auth:account_delete' %}" method='POST'
-        id="form_delete_popup" class="hidden"
+        id="form_delete_popup" class="hidden bg-color--dark rendered-form rendered-form--dark"
     >
         {% csrf_token %}
         {{form_delete.password}}
-        <input type="submit" value="Delete Account" class="btn btn--outlin btn--danger">
+        <input type="submit" value="Delete Account" class="btn--custom btn--custom--dark link link--danger">
     </form>
 
 </div>

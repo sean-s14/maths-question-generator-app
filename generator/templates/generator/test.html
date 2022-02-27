@@ -4,22 +4,22 @@
 
 <div class="test__container tes">
 
-    <div class="test__timer">00:00:00.<span class="test__timer__ms">00</span></div>
+    <div class="test__timer color--light">00:00:00.<span class="test__timer__ms">00</span></div>
 
     <div class="test__container__blank"></div>
 
     <!-- Question Completion Popup -->
-    <div class="question__completion__cover"></div>
-    <div class="question__completion__popup">
-        <div class="question__completion__popup__complete_msg">
+    <div class="question__completion__cover cover--darker"></div>
+    <div class="question__completion__popup btn--custom btn--custom--dark" style="cursor: default;">
+        <div class="question__completion__popup__complete_msg color--light">
             --placeholder--
         </div>
-        <button class="btn btn--fill" data-button-continue="">
-            Continue
+        <button class="btn--custom btn--custom--dark" data-button-continue="">
+            <span>Continue</span>
             <i class="fas fa-long-arrow-alt-right"></i>
         </button>
         <!-- Hidden elements below -->
-        <div class="test__complete__time">
+        <div class="test__complete__time color--light">
             <span>Time:</span>
             <span>00:00:00.<span class="test__timer__ms">23</span></span>
         </div>
@@ -27,46 +27,46 @@
         <!-- Buttons for "New Test" & "Return to Presets" -->
         {% if preset %}
             <div class="test__complete__btns">
-                <a href="{% url 'generator:test' preset.slug %}" class="btn btn--outline input" data-new-test="" data-submit=''>
+                <a href="{% url 'generator:test' preset.slug %}" class="btn--custom btn--custom--dark w-75 input" data-new-test="" data-submit=''>
                     Restart Test <i class="fas fa-redo-alt"></i>
                 </a>
-                <a href="{% url 'generator:preset_list' %}" class="btn btn--outline input" data-submit=''>
+                <a href="{% url 'generator:preset_list' %}" class="btn--custom btn--custom--dark w-75 input" data-submit=''>
                     Return to Presets
                 </a>
-                <a href="{% url 'generator:history' %}" class="btn btn--outline input" data-submit=''>
+                <a href="{% url 'generator:history' %}" class="btn--custom btn--custom--dark w-75 input" data-submit=''>
                     View History
                 </a>
             </div>
         {% else %}
             <div class="test__complete__btns">
-                <a href="" class="btn btn--outline input" data-new-test="" data-submit=''>
+                <a href="" class="btn--custom btn--custom--dark w-75 input" data-new-test="" data-submit=''>
                     Restart Test <i class="fas fa-redo-alt"></i>
                 </a>
             </div>
         {% endif %}
 
         <!-- Table [ question | answer | user_answer | correct? ] -->
-        <table class="test__complete__table">
+        <table class="test__complete__table draggable">
             <tr>
-                <th>Question</th>
-                <th>Answer</th>
-                <th>Your Answer</th>
-                <th>Correct?</th>
+                <th class="color--light">Question</th>
+                <th class="color--light">Answer</th>
+                <th class="color--light">Your Answer</th>
+                <th class="color--light">Correct?</th>
             </tr>
             {% for question in questions %}
-            <tr>
-                <td>{{question.question}}</td>
-                <td>{{question.answer}}</td>
-                <td data-user-answer="">???</td>
-                <td data-correct=""><i class="fas fa-check-circle"></i></td>
-            </tr>
+                <tr  class="{% if forloop.counter|divisibleby:2 %}bg-color--dark{% else %}bg-color--darker{% endif %}">
+                    <td class="color--light">{{question.question}}</td>
+                    <td class="color--light">{{question.answer}}</td>
+                    <td class="color--light" data-user-answer="">???</td>
+                    <td class="color--light" data-correct=""><i class="fas fa-check-circle"></i></td>
+                </tr>
             {% endfor %}
         </table>
     </div>
 
     <div class="test__container__inner">
         {% for question in questions %}
-            <div class="test__container__question">
+            <div class="test__container__question color--light">
                 {{question.question}}
             </div>
             <div class="test__container__answer">
@@ -78,10 +78,10 @@
     <div class="test__btns">
         <input 
             type="text" 
-            class="test__btns__answer btn" 
+            class="test__btns__answer btn--custom btn--custom--dark mb-4" 
             placeholder="answer..."
         >
-        <a class="test__btns__submit btn btn--fill">
+        <a class="test__btns__submit btn--custom btn--custom--dark w-100">
             SUBMIT
         </a>
     </div>
@@ -91,4 +91,5 @@
 
 </div>
 <script src="{% static 'js/pages/test.js' %}"></script>
+<script src="{% static 'js/draggable.js' %}"></script>
 {% endblock content %}

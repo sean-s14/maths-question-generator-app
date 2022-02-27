@@ -1,0 +1,50 @@
+@use '../base/_variables' as var
+    
+// Remove this when done
+$box-shadow-sizes: ('sm': ( (4px, 4px , 8px), (-4px, -4px, 8px) ), 'md': ( (8px, 8px , 16px), (-8px, -8px, 16px) ), 'lg': ( (12px, 12px , 24px), (-12px, -12px, 24px) ))
+
+    
+@mixin btn-convex ($theme: dark)
+    @if $theme == dark
+        color: var.$light
+        background: linear-gradient(145deg, #373737, #2e2e2e)
+        box-shadow:  8px 8px 16px #212121, -8px -8px 16px #454545
+    @else
+        color: var.$dark
+        background: linear-gradient(145deg, var.$light, #d6d6d6)
+        box-shadow:  8px 8px 16px #9b9b9b, -8px -8px 16px var.$light
+
+
+@mixin btn-pressed ($theme: dark)
+    @if $theme == dark
+        color: var.$light
+        background: var.$dark
+        box-shadow: inset 8px 8px 16px #212121, inset -8px -8px 16px #454545
+    @else
+        color: var.$dark
+        background: var.$light
+        box-shadow: inset 8px 8px 16px #9b9b9b, inset -8px -8px 16px #ffffff
+
+
+@mixin btn-concave ($theme: dark)
+    @if $theme == dark
+        color: var.$light
+        background: linear-gradient(145deg, #2e2e2e, #373737)
+        box-shadow: 4px 4px 8px #212121, -4px -4px 8px #454545
+    @else
+        color: var.$dark
+        background: linear-gradient(145deg, #d6d6d6, #ffffff)
+        box-shadow: 8px 8px 16px #9b9b9b, -8px -8px 16px #ffffff
+
+
+@mixin btn-flat ($theme: dark)
+    @if $theme == dark
+        color: var.$light
+        background: var.$dark
+        box-shadow: 8px 8px 16px #212121, -8px -8px 16px #454545
+    @else
+        color: var.$dark
+        background: var.$light
+        box-shadow: 8px 8px 16px #9b9b9b, -8px -8px 16px #ffffff
+
+

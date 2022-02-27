@@ -2,15 +2,14 @@
 {% load static %}
 
 {% block content %}
-<form action="{% url 'custom_auth:signup' %}" method="POST" class="auth__form">
+<form action="{% url 'custom_auth:signup' %}" method="POST" class="auth__form rendered-form rendered-form--dark">
     {% csrf_token %}
-    <!-- TODO: Change placeholders in form and then remove labels and p tags -->
     {{form.username}}
     {{form.email}}
     {{form.password1}}
     {{form.password2}}
-    <input type="submit" value="Signup" class="btn btn--outline input">
-    <hr class="hr">
-    <a href="{% url 'custom_auth:login' %}" class="btn btn--outline">Login</a>
+    <input type="submit" value="Signup" class="btn--custom btn--custom--dark">
+    <hr class="hr color--light bg-color--light">
+    <a href="{% url 'custom_auth:login' %}" class="btn--custom btn--custom--dark" style="width: 80%;">Login</a>
 </form>
 {% endblock content %}

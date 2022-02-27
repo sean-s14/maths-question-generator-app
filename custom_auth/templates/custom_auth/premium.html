@@ -21,7 +21,7 @@
                     {% if price.interval == 'month' %}checked{% endif %}
                 >
 
-                <label for="{{price.id}}">
+                <label for="{{price.id}}" class="btn--custom btn--custom--dark">
                     <div>£{{price.amount}} / {{price.interval}}</div> 
                     {% if price.interval == 'year' %}<span>(44% cheaper)</span>{% endif %}
                 </label>
@@ -32,7 +32,7 @@
         <button
             id="submit" type="submit" 
             {% if user.is_premium == True %}disabled{% endif %}
-            class="btn btn--outline"
+            class="btn--custom btn--custom--dark w-100"
         >
             Subscribe
         </button>

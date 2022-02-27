@@ -2,27 +2,29 @@
 {% load static %}
 
 {% block content %}
-<div id="history_page">
+<div id="history_page" class="draggable">
     <table class="history__table">
         <tr>
-            <th>Title</th>
-            <th>Score</th>
-            <th>Time</th>
-            <th>Date</th>
+            <th class="color--light">Title</th>
+            <th class="color--light">Score</th>
+            <th class="color--light">Time</th>
+            <th class="color--light">Date</th>
         </tr>
         {% for h in history %}
-            <tr>
+            <tr class="{% if forloop.counter|divisibleby:2 %}bg-color--dark{% else %}bg-color--darker{% endif %}"
+            >
                 <td>
                     <a href="{% url 'generator:preset_detail' h.preset.slug %}" data-preset-title="">
                         {{h.preset.title}}
                     </a>
                 </td>
-                <td>{{h.score}}/{{h.preset.question_count}}</td>
-                <td data-time-completed-in="">{{h.time_completed_in}}</td>
-                <td>{{h.date_created}}</td>
+                <td class="color--light">{{h.score}}/{{h.preset.question_count}}</td>
+                <td class="color--light" data-time-completed-in="">{{h.time_completed_in}}</td>
+                <td class="color--light">{{h.date_created}}</td>
             </tr>
         {% endfor %}
     </table>
 </div>
 <script src="{% static 'js/history.js' %}"></script>
+<script src="{% static 'js/draggable.js' %}"></script>
 {% endblock content %}

@@ -3,11 +3,11 @@
 {% block content %}
 <div class="preset_container">
     {% for preset in presets %}
-        <a href="{% url 'generator:preset_detail' preset.slug %}" class="btn btn--outline">
+        <a href="{% url 'generator:preset_detail' preset.slug %}" class="btn--custom btn--custom--dark link">
             {{preset.title|truncatechars:20}}
         </a>
     {% empty %}
-        <a href="{% url 'generator:preset_create' %}" class="btn btn--outline input--override">
+        <a href="{% url 'generator:preset_create' %}" class="btn--custom btn--custom--dark color--primary link">
             Create Preset
         </a>    
     {% endfor %}
